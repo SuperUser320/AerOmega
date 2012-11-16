@@ -91,7 +91,7 @@ class Button {
     if (locked) {
       text(lockedText, x + (buttonWidth / 2) - (textWidth(lockedText) / 2), y + (buttonHeight / 2) + 7);
     } else {
-       text(buttonText, x + (buttonWidth / 2) - (textWidth(buttonText) / 2), y + (buttonHeight / 2) + 7);
+      text(buttonText, x + (buttonWidth / 2) - (textWidth(buttonText) / 2), y + (buttonHeight / 2) + 7);
     }
   }
 

@@ -37,7 +37,7 @@ char readChar = ' ';
 String tmpStr;
 
 void setup() {
-  size(450, 400);
+  size(1280, 800);
   BankGothic = loadFont("BankGothicBT-Light-24.vlw");
   SegoeUI = loadFont("SegoeUI-20.vlw");
   textFont(BankGothic);
