@@ -2,7 +2,7 @@ class VScrollbar {
 
   int swidth, sheight;    // width and height of bar
   int xpos, ypos;         // x and y position of bar
-  float spos, newspos;    // x position of slider
+  float spos, newspos;    // y position of slider
   int sposMin, sposMax;   // max and min values of slider
   int loose;              // how loose/heavy
   boolean over;           // is the mouse over the slider?
@@ -49,7 +49,7 @@ class VScrollbar {
   }
 
   boolean over() {
-    if (mouseX > xpos && mouseX < xpos+swidth &&
+    if (mouseX > xpos - 10 && mouseX < xpos+swidth+10 &&
       mouseY > ypos && mouseY < ypos+sheight) {
       return true;
     } 
@@ -59,21 +59,34 @@ class VScrollbar {
   }
 
   void display() {
+    stroke(170);
     fill(255);
-    rect(xpos, ypos, swidth, sheight);
+    rect(xpos, ypos, swidth, sheight + 4);
     if (over || locked) {
-      fill(50, 150, 205);
+      fill(160);
     } 
     else {
-      fill(100, 200, 255);
+      fill(180);
     }
-    rect(xpos, spos, swidth, swidth);
+    noStroke();
+    rect(xpos - 10, spos, swidth + 20, swidth);
+    
+    if (over || locked) {
+      fill(80);
+    } 
+    else {
+      fill(100);
+    }
+    fill(100);
+    triangle(xpos - 10, spos + swidth, xpos, spos + swidth, xpos, spos + swidth + 5);
+    triangle(xpos + swidth + 10, spos + swidth, xpos + swidth, spos + swidth, xpos + swidth, spos + swidth + 5);
+    fill(140);
+    rect(xpos, spos + swidth, swidth, 5);
+    stroke(1);
   }
 
   float getPos() {
-    // Convert spos to be values between
-    // 0 and the total width of the scrollbar
-    return 100 - (0.329 * ((spos * ratio) - ypos - 4)); // I have no clue how to fix this
+    return 100 - (((spos - ypos)/(sposMax-sposMin)) * 100);
   }
 }
 

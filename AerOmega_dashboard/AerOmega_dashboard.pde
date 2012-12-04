@@ -7,6 +7,7 @@ Button initButton;
 
 PFont BankGothic;
 PFont SegoeUI;
+PFont SegoeUITitle;
 
 //// GUI variables ////
 boolean dispQuad = true;
@@ -39,12 +40,13 @@ String tmpStr;
 void setup() {
   size(1280, 800);
   BankGothic = loadFont("BankGothicBT-Light-24.vlw");
+  SegoeUITitle = loadFont("SegoeUI-Light-72.vlw");
   SegoeUI = loadFont("SegoeUI-20.vlw");
-  textFont(BankGothic);
+  //textFont(BankGothic);
   println(Serial.list());
 
   //// GUI ELEMENTS ////
-  throttleBar = new VScrollbar(80, 20, 40, height - 95, 1);
+  throttleBar = new VScrollbar(80, 120, 30, height - 180, 1);
   initButton = new Button(170, 350, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
 
   //// ARDUINO ////
@@ -53,7 +55,8 @@ void setup() {
 }
 
 void draw() {
-  background(40);
+  drawBackground();
+  
   fill(255);
 
   //displaySignal();
@@ -66,11 +69,29 @@ void draw() {
   sendData();
 }
 
+void drawBackground() {
+  background(32);
+  noFill();
+  strokeWeight(4);
+  stroke(0);
+  rect(0,0,width, height);
+  stroke(24);
+  fill(26);
+  rect(20, 100, width - 40, height - 120);
+  strokeWeight(1);
+  
+  fill(255);
+  textFont(SegoeUITitle);
+  text("AerΩmega | V0.1", 20, 70);
+  
+  textFont(SegoeUI);
+}
+
 void displayControls() {
 
   //Main throttle slider
   throttle = int(throttleBar.getPos());
-  text("Throttle: \n\n" + throttle, 20, height - 50);
+  text("Throttle: " + throttle, 30, height - 30);
   throttleBar.update();
   throttleBar.display();
 

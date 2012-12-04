@@ -35,7 +35,7 @@ String tmpUsrStr;
 //// Dashboard Data ////
 ////////////////////////
 int loopCount = 0;
-int updateFreq = 50;
+int updateFreq = 100;
 
 /////////////////////////
 //// Angles from IMU ////
