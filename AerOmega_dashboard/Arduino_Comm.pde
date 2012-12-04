@@ -50,25 +50,25 @@ void storeVal() {
 
     break;
 
-  case 6:
+  case 3:
 
     mt1 = float(tmpStr);
 
     break;
 
-  case 7:
+  case 4:
 
     mt2 = float(tmpStr);
 
     break;
 
-  case 8:
+  case 5:
 
     mt3 = float(tmpStr);
 
     break;
 
-  case 9:
+  case 6:
 
     mt4 = float(tmpStr);
 

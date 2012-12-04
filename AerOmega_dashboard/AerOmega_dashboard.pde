@@ -8,9 +8,10 @@ Button initButton;
 PFont BankGothic;
 PFont SegoeUI;
 PFont SegoeUITitle;
+PFont SegoeUISubTitle;
 
 //// GUI variables ////
-boolean dispQuad = true;
+boolean dispQuad = false;
 
 //// transmission variables ////
 int loopCount = 0;
@@ -41,6 +42,7 @@ void setup() {
   size(1280, 800);
   BankGothic = loadFont("BankGothicBT-Light-24.vlw");
   SegoeUITitle = loadFont("SegoeUI-Light-72.vlw");
+  SegoeUISubTitle = loadFont("SegoeUI-Light-48.vlw");
   SegoeUI = loadFont("SegoeUI-20.vlw");
   //textFont(BankGothic);
   println(Serial.list());
@@ -56,14 +58,15 @@ void setup() {
 
 void draw() {
   drawBackground();
-  
   fill(255);
 
   //displaySignal();
 
-  displayControls();
-  displayAngleData();
-  displayMotorData();
+  
+
+  //displayControls();
+  //displayAngleData();
+  //displayMotorData();
 
   //Send data back at the same speed
   sendData();
@@ -83,6 +86,11 @@ void drawBackground() {
   fill(255);
   textFont(SegoeUITitle);
   text("AerΩmega | V0.1", 20, 70);
+  
+  textFont(SegoeUISubTitle);
+  text("Attitude Values", 40, 150);
+  text("PID Corrections", 600, 150);
+  text("Motor Values", 40, 480);
   
   textFont(SegoeUI);
 }

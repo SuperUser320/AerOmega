@@ -1,27 +1,31 @@
 class Button {
 
   int x, y, buttonWidth, buttonHeight;
-  
+
   color pressedColor = color(100);
   color releasedColor = color(200);
   color hoverColor = color(150);
   color lockedColor = color(80);
-  color warningPressedColor = color(150,45,45);
-  color warningReleasedColor = color(215,60,60);
-  color warningHoverColor = color(200,45,45);
-  color warningLockedColor = color(80,45,45);
+  color warningPressedColor = color(150, 45, 45);
+  color warningReleasedColor = color(215, 60, 60);
+  color warningHoverColor = color(200, 45, 45);
+  color warningLockedColor = color(80, 45, 45);
   color pressedTextColor = color(155);
   color releasedTextColor = color(255);
   color hoverTextColor = color(205);
   color lockedTextColor = color(135);
-  
+
   color textColor;
   color buttonColor;
-  
+
   boolean locked = false;
   boolean pressed = false;
   boolean hover = false;
-  
+  boolean hasBeenPressed = false;
+  boolean pressOriginInside = false;
+  boolean lastPressed = false;
+  boolean lastMouse = false;
+
   String buttonText;
   String lockedText;
 
@@ -35,7 +39,7 @@ class Button {
     warningButton = twarningButton;
     buttonText = ttext;
   }
-  
+
   Button (int tx, int ty, int twidth, int theight, String ttext, boolean twarningButton, String tlockText) {
     x = tx;
     y = ty;
@@ -65,7 +69,8 @@ class Button {
         buttonColor = warningReleasedColor;
         textColor = releasedColor;
       }
-    } else {
+    } 
+    else {
       if (locked) {
         buttonColor = lockedColor;
         textColor = lockedTextColor;
@@ -83,19 +88,21 @@ class Button {
         textColor = releasedTextColor;
       }
     }
-    
+
     fill(buttonColor);
     rect(x, y, buttonWidth, buttonHeight);
-    
+
     fill(textColor);
     if (locked) {
       text(lockedText, x + (buttonWidth / 2) - (textWidth(lockedText) / 2), y + (buttonHeight / 2) + 7);
-    } else {
+    } 
+    else {
       text(buttonText, x + (buttonWidth / 2) - (textWidth(buttonText) / 2), y + (buttonHeight / 2) + 7);
     }
   }
 
   void update() {
+    //mousePressed in button
     if (mouseX > x && mouseX < (x + buttonWidth) && mouseY > y && mouseY < (y + buttonHeight) && !locked) {
       if (mousePressed) {
         pressed = true;
@@ -110,14 +117,32 @@ class Button {
       hover = false;
       pressed = false;
     }
+    
+    //mouseDown in button
+    if (mouseX > x && mouseX < (x + buttonWidth) && mouseY > y && mouseY < (y + buttonHeight) && !locked && lastPressed == false && pressed == true && lastMouse == false && mousePressed) {
+      pressOriginInside = true;
+    } else if (!(mouseX > x && mouseX < (x + buttonWidth) && mouseY > y && mouseY < (y + buttonHeight)) && !locked && lastPressed == false && pressed == true && lastMouse == false && mousePressed) {
+      pressOriginInside = false;
+    }
+    
+    //mouseReleased in button
+    if (mouseX > x && mouseX < (x + buttonWidth) && mouseY > y && mouseY < (y + buttonHeight) && !locked && lastPressed == true && pressed == false && pressOriginInside) {
+      hasBeenPressed = true;
+    } else {
+      hasBeenPressed = false;
+    }
+    
     drawButton();
+    lastPressed = pressed;
+    lastMouse = mousePressed;
   }
 
   boolean buttonPressed() {
-    if (pressed) {
+    if (hasBeenPressed) {
+      //hasBeenPressed = false;
       return true;
-    } 
-    else {
+    } else {
+      //hasBeenPressed = false;
       return false;
     }
   }

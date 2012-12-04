@@ -1,3 +1,7 @@
+//////////////////////
+//CHANGE TO DISP BAR//
+//////////////////////
+/*
 class VScrollbar {
 
   int swidth, sheight;    // width and height of bar
@@ -62,6 +66,8 @@ class VScrollbar {
     stroke(170);
     fill(255);
     rect(xpos, ypos, swidth, sheight + 4);
+    fill(0);
+    rect(xpos, ypos, swidth, spos - ypos);
     if (over || locked) {
       fill(160);
     } 
@@ -81,7 +87,7 @@ class VScrollbar {
     triangle(xpos - 10, spos + swidth, xpos, spos + swidth, xpos, spos + swidth + 5);
     triangle(xpos + swidth + 10, spos + swidth, xpos + swidth, spos + swidth, xpos + swidth, spos + swidth + 5);
     fill(140);
-    rect(xpos, spos + swidth, swidth, 5);
+    rect(xpos, spos + swidth, swidth, 2);
     stroke(1);
   }
 
@@ -89,4 +95,4 @@ class VScrollbar {
     return 100 - (((spos - ypos)/(sposMax-sposMin)) * 100);
   }
 }
-
+*/
