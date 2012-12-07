@@ -2,7 +2,10 @@ import processing.serial.*;
 
 Serial arduino;
 //// GUI elements ////
-VScrollbar throttleBar;
+VScrollbar throttleBar1;
+VScrollbar throttleBar2;
+VScrollbar throttleBar3;
+VScrollbar throttleBar4;
 Button initButton;
 
 PFont BankGothic;
@@ -48,11 +51,14 @@ void setup() {
   println(Serial.list());
 
   //// GUI ELEMENTS ////
-  throttleBar = new VScrollbar(80, 120, 30, height - 180, 1);
-  initButton = new Button(170, 350, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
+  throttleBar1 = new VScrollbar(550, 500, 30, 220, 1);
+  throttleBar2 = new VScrollbar(650, 500, 30, 220, 1);
+  throttleBar3 = new VScrollbar(750, 500, 30, 220, 1);
+  throttleBar4 = new VScrollbar(850, 500, 30, 220, 1);
+  initButton = new Button(975, 720, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
 
   //// ARDUINO ////
-  arduino = new Serial(this, Serial.list()[1], 57600);
+ // arduino = new Serial(this, Serial.list()[1], 57600);
   delay(10);
 }
 
@@ -62,24 +68,22 @@ void draw() {
 
   //displaySignal();
 
-  
-
-  //displayControls();
+  displayControls();
   //displayAngleData();
   //displayMotorData();
 
   //Send data back at the same speed
-  sendData();
+  //sendData();
 }
 
 void drawBackground() {
-  background(32);
+  background(35);
   noFill();
   strokeWeight(4);
   stroke(0);
   rect(0,0,width, height);
-  stroke(24);
-  fill(26);
+  stroke(25);
+  fill(30);
   rect(20, 100, width - 40, height - 120);
   strokeWeight(1);
   
@@ -91,6 +95,7 @@ void drawBackground() {
   text("Attitude Values", 40, 150);
   text("PID Corrections", 600, 150);
   text("Motor Values", 40, 480);
+  text("Controls", 500, 480);
   
   textFont(SegoeUI);
 }
@@ -98,11 +103,25 @@ void drawBackground() {
 void displayControls() {
 
   //Main throttle slider
-  throttle = int(throttleBar.getPos());
-  text("Throttle: " + throttle, 30, height - 30);
-  throttleBar.update();
-  throttleBar.display();
+  fill(255);
+  text("MT1: " + int(throttleBar1.getPos()), 510, height - 40);
+  throttleBar1.update();
+  throttleBar1.display();
 
+  fill(255);
+  text("MT2: " + int(throttleBar2.getPos()), 610, height - 40);
+  throttleBar2.update();
+  throttleBar2.display();
+  
+  fill(255);
+  text("MT3: " + int(throttleBar3.getPos()), 710, height - 40);
+  throttleBar3.update();
+  throttleBar3.display();
+  
+  fill(255);
+  text("MT4: " + int(throttleBar4.getPos()), 810, height - 40);
+  throttleBar4.update();
+  throttleBar4.display();
   //Quadrotor init button
   initButton.update();
   if (initButton.buttonPressed()) {
