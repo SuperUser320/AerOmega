@@ -6,6 +6,12 @@ VScrollbar throttleBar1;
 VScrollbar throttleBar2;
 VScrollbar throttleBar3;
 VScrollbar throttleBar4;
+
+displayBar throttleOut1;
+displayBar throttleOut2;
+displayBar throttleOut3;
+displayBar throttleOut4;
+
 Button initButton;
 
 PFont BankGothic;
@@ -55,10 +61,16 @@ void setup() {
   throttleBar2 = new VScrollbar(650, 500, 30, 220, 1);
   throttleBar3 = new VScrollbar(750, 500, 30, 220, 1);
   throttleBar4 = new VScrollbar(850, 500, 30, 220, 1);
+  
+  throttleOut1 = new displayBar(150, 500, 30, 220);
+  throttleOut2 = new displayBar(250, 500, 30, 220);
+  throttleOut3 = new displayBar(350, 500, 30, 220);
+  throttleOut4 = new displayBar(450, 500, 30, 220);
+  
   initButton = new Button(975, 720, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
 
   //// ARDUINO ////
- // arduino = new Serial(this, Serial.list()[1], 57600);
+  arduino = new Serial(this, Serial.list()[1], 57600);
   delay(10);
 }
 
@@ -70,10 +82,10 @@ void draw() {
 
   displayControls();
   //displayAngleData();
-  //displayMotorData();
+  displayMotorData();
 
   //Send data back at the same speed
-  //sendData();
+  sendData();
 }
 
 void drawBackground() {
@@ -158,10 +170,20 @@ void displayMotorData() {
     arc(335, 315, 60, 60, 0, ((mt4 - 999)/1000) * TWO_PI);
   } 
   else {
-    text("Motor 1: " + truncate(mt1 - 999, 3), 180, 180);
-    text("Motor 2: " + truncate(mt2 - 999, 3), 180, 225);
-    text("Motor 3: " + truncate(mt3 - 999, 3), 180, 270);
-    text("Motor 4: " + truncate(mt4 - 999, 3), 180, 315);
+    float mo1 = truncate((mt1 - 999) / 1000, 3);
+    float mo2 = truncate((mt2 - 999) / 1000, 3);
+    float mo3 = truncate((mt3 - 999) / 1000, 3);
+    float mo4 = truncate((mt4 - 999) / 1000, 3);
+    
+    throttleOut1.update(mo1);
+    throttleOut2.update(mo2);
+    throttleOut3.update(mo3);
+    throttleOut4.update(mo4);
+    
+    text("M1: " + mo1, 10, height - 40);
+    text("M2: " + mo2, 110, height - 40);
+    text("M3: " + mo3, 210, height - 40);
+    text("M4: " + mo4, 310, height - 40);
   }
 }
 
