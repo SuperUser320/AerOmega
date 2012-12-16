@@ -20,7 +20,7 @@ class displayBar {
 
   void update(float value) {
     
-    spos = ypos + (value * (sposMax-sposMin));
+    spos = (ypos + ((value/100) * (sposMax-sposMin))) + 100;
     
     stroke(170);
     fill(255);
@@ -31,10 +31,10 @@ class displayBar {
     noStroke();
     rect(xpos - 10, spos, swidth + 20, 5);
     fill(100);
-    triangle(xpos - 10, spos + 5, xpos, spos + 5, xpos, spos + 5 + 5);
-    triangle(xpos + swidth + 10, spos + swidth, xpos + swidth, spos + 5, xpos + 5, spos + 5 + 5);
+    triangle(xpos - 10, spos + 4, xpos, spos + 4, xpos, spos + 10);
+    triangle(xpos + swidth + 10, spos + 4, xpos + swidth + 1, spos + 4, xpos + swidth + 1, spos + 10);
     fill(140);
-    rect(xpos, spos + 5, swidth, 2);
+    rect(xpos, spos + 5, swidth + 1, 2);
     stroke(1);
   }
 }
