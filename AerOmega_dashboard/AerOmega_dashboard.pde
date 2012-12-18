@@ -170,10 +170,10 @@ void displayMotorData() {
     arc(335, 315, 60, 60, 0, ((mt4 - 999)/1000) * TWO_PI);
   } 
   else {
-    float mo1 = truncate((mt1 - 999), 3);
-    float mo2 = truncate((mt2 - 999), 3);
-    float mo3 = truncate((mt3 - 999), 3);
-    float mo4 = truncate((mt4 - 999), 3);
+    float mo1 = truncate((mt1 - 999), 2);
+    float mo2 = truncate((mt2 - 999), 2);
+    float mo3 = truncate((mt3 - 999), 2);
+    float mo4 = truncate((mt4 - 999), 2);
     
     throttleOut1.update(mo1/10);
     throttleOut2.update(mo2/10);
