@@ -37,7 +37,7 @@ boolean init = false;
 
 //// dashboard data ////
 float xAng = 12;
-float yAng = -43;
+float yAng = 243;
 float zAng = 146;
 
 float pxAng = 0;
@@ -133,25 +133,17 @@ void drawBackground() {
 void displayControls() {
 
   //Main throttle slider
-  fill(255);
-  text("MT1: " + int(throttleBar1.getPos()), 510, height - 40);
   throttleBar1.update();
-  throttleBar1.display();
+  throttleBar1.display("A: ");
 
-  fill(255);
-  text("MT2: " + int(throttleBar2.getPos()), 610, height - 40);
   throttleBar2.update();
-  throttleBar2.display();
+  throttleBar2.display("B: ");
   
-  fill(255);
-  text("MT3: " + int(throttleBar3.getPos()), 710, height - 40);
   throttleBar3.update();
-  throttleBar3.display();
+  throttleBar3.display("C: ");
   
-  fill(255);
-  text("MT4: " + int(throttleBar4.getPos()), 810, height - 40);
   throttleBar4.update();
-  throttleBar4.display();
+  throttleBar4.display("D: ");
   //Quadrotor init button
   initButton.update();
   if (initButton.buttonPressed()) {
@@ -161,15 +153,10 @@ void displayControls() {
 }
 
 void displayAngleData() {
-  //Angles
-  fill(255);
-  text("xAng: " + xAng, 90, 415);
-  text("yAng: " + yAng, 310, 415);
-  text("zAng: " + zAng, 530, 415);
   
-  xGimbal.updateAngle(xAng);
-  yGimbal.updateAngle(yAng);
-  zGimbal.updateAngle(zAng);
+  xGimbal.updateAngle("X: ", xAng);
+  yGimbal.updateAngle("Y: ", yAng);
+  zGimbal.updateAngle("Z: ", zAng);
 }
 
 void displayPidData() {
@@ -204,16 +191,10 @@ void displayMotorData() {
     float mo3 = truncate(mt3, 2);
     float mo4 = truncate(mt4, 2);
     
-    throttleOut1.update(mo1/10);
-    throttleOut2.update(mo2/10);
-    throttleOut3.update(mo3/10);
-    throttleOut4.update(mo4/10);
-    
-    fill(255);
-    text("M1: " + mo1, 30, height - 40);
-    text("M2: " + mo2, 130, height - 40);
-    text("M3: " + mo3, 230, height - 40);
-    text("M4: " + mo4, 330, height - 40);
+    throttleOut1.update("A: ", mo1/10);
+    throttleOut2.update("B: ", mo2/10);
+    throttleOut3.update("C: ", mo3/10);
+    throttleOut4.update("D: ", mo4/10);
   }
 }
 

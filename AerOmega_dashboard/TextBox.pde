@@ -13,8 +13,15 @@ class TextBox {
   }
   
   void update (String inputText) {
-    stroke(0);
-    fill(0);
+    strokeWeight(1);
+    stroke(200);
+    fill(50);
+    if (w == 0) {
+      w = int(textWidth(inputText) + 10);
+    }
+    rect(x, y , w, h);
+    fill(255);
+    text(inputText, x - 5 + w - int(textWidth(inputText)), y + h - 2);
   }
 }
 

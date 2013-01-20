@@ -8,7 +8,8 @@ class VScrollbar {
   boolean over;           // is the mouse over the slider?
   boolean locked;
   float ratio;
-
+  TextBox textBox;
+  
   VScrollbar (int xp, int yp, int sw, int sh, int l) {
     swidth = sw;
     sheight = sh;
@@ -21,6 +22,8 @@ class VScrollbar {
     sposMin = ypos;
     sposMax = ypos + sheight - swidth;
     loose = l;
+    
+    textBox = new TextBox(xpos - (int(textWidth("100.0")) + 20)/2 + swidth/2, ypos + sheight + 15, int(textWidth("100.0")) + 20, 20, false);
   }
 
   void update() {
@@ -58,7 +61,7 @@ class VScrollbar {
     }
   }
 
-  void display() {
+  void display(String label) {
     stroke(170);
     fill(255);
     rect(xpos, ypos, swidth, sheight + 4);
@@ -85,6 +88,10 @@ class VScrollbar {
     fill(140);
     rect(xpos, spos + swidth, swidth, 2);
     stroke(1);
+    
+    fill(255);
+    text(label, textBox.x - int(textWidth(label)), textBox.y + textBox.h - 2);
+    textBox.update(Float.toString(truncate(100 - (((spos - ypos)/(sposMax-sposMin)) * 100), 1)));
   }
 
   float getPos() {
