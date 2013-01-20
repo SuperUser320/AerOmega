@@ -1,12 +1,12 @@
 
-class displayBar {
+class DisplayBar {
 
   int swidth, sheight;    // width and height of bar
   int xpos, ypos;         // x and y position of bar
   float spos, newspos;    // y position of slider
   int sposMin, sposMax;   // max and min values of slider
 
-  displayBar (int xp, int yp, int sw, int sh) {
+  DisplayBar (int xp, int yp, int sw, int sh) {
     swidth = sw;
     sheight = sh;
     int heighttowidth = sh - sw;
@@ -20,8 +20,9 @@ class displayBar {
 
   void update(float value) {
     
-    spos = (ypos + ((value/100) * (sposMax-sposMin))) + 100;
+    spos = (ypos + (-value/100) * (sposMax-sposMin)) + (sposMax-sposMin);
     
+    strokeWeight(1);
     stroke(170);
     fill(255);
     rect(xpos, ypos, swidth, sheight + 4);

@@ -7,13 +7,18 @@ VScrollbar throttleBar2;
 VScrollbar throttleBar3;
 VScrollbar throttleBar4;
 
-displayBar throttleOut1;
-displayBar throttleOut2;
-displayBar throttleOut3;
-displayBar throttleOut4;
+DisplayBar throttleOut1;
+DisplayBar throttleOut2;
+DisplayBar throttleOut3;
+DisplayBar throttleOut4;
+
+Gimbal xGimbal;
+Gimbal yGimbal;
+Gimbal zGimbal;
 
 Button initButton;
 
+//// Fonts ////
 PFont BankGothic;
 PFont SegoeUI;
 PFont SegoeUITitle;
@@ -31,14 +36,18 @@ int throttle;
 boolean init = false;
 
 //// dashboard data ////
-float xAng;
-float yAng;
-float zAng;
+float xAng = 12;
+float yAng = -43;
+float zAng = 146;
 
-float mt1;
-float mt2;
-float mt3;
-float mt4;
+float pxAng = 0;
+float pyAng = 0;
+float pzAng = 0;
+
+float mt1 = 352;
+float mt2 = 532;
+float mt3 = 732;
+float mt4 = 164;
 
 boolean dataRecieved;
 
@@ -49,6 +58,10 @@ String tmpStr;
 
 void setup() {
   size(1280, 800);
+  
+  hint(DISABLE_OPENGL_2X_SMOOTH);
+  hint(ENABLE_OPENGL_4X_SMOOTH);
+  
   BankGothic = loadFont("BankGothicBT-Light-24.vlw");
   SegoeUITitle = loadFont("SegoeUI-Light-72.vlw");
   SegoeUISubTitle = loadFont("SegoeUI-Light-48.vlw");
@@ -62,15 +75,20 @@ void setup() {
   throttleBar3 = new VScrollbar(750, 500, 30, 220, 1);
   throttleBar4 = new VScrollbar(850, 500, 30, 220, 1);
   
-  throttleOut1 = new displayBar(80, 500, 30, 220);
-  throttleOut2 = new displayBar(180, 500, 30, 220);
-  throttleOut3 = new displayBar(280, 500, 30, 220);
-  throttleOut4 = new displayBar(380, 500, 30, 220);
+  throttleOut1 = new DisplayBar(80,  500, 30, 220);
+  throttleOut2 = new DisplayBar(180, 500, 30, 220);
+  throttleOut3 = new DisplayBar(280, 500, 30, 220);
+  throttleOut4 = new DisplayBar(380, 500, 30, 220);
+  
+  xGimbal = new Gimbal(135, 265, 175, false, true);
+  yGimbal = new Gimbal(355, 265, 175, false, true);
+  zGimbal = new Gimbal(575, 265, 175, true,  true);
+  
   
   initButton = new Button(975, 720, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
 
   //// ARDUINO ////
-  arduino = new Serial(this, Serial.list()[1], 57600);
+  //arduino = new Serial(this, Serial.list()[1], 57600);
   delay(10);
 }
 
@@ -81,11 +99,12 @@ void draw() {
   //displaySignal();
 
   displayControls();
-  //displayAngleData();
+  displayAngleData();
   displayMotorData();
+  displayPidData();
 
   //Send data back at the same speed
-  sendData();
+  //sendData();
 }
 
 void drawBackground() {
@@ -105,7 +124,7 @@ void drawBackground() {
   
   textFont(SegoeUISubTitle);
   text("Attitude Values", 40, 150);
-  text("PID Corrections", 600, 150);
+  text("PID Corrections", 725, 150);
   text("Motor Values", 40, 480);
   text("Controls", 500, 480);
   
@@ -144,9 +163,20 @@ void displayControls() {
 
 void displayAngleData() {
   //Angles
-  text("xAng: " + xAng, 180, 45);
-  text("yAng: " + yAng, 180, 90);
-  text("zAng: " + zAng, 180, 135);
+  fill(255);
+  text("xAng: " + xAng, 90, 415);
+  text("yAng: " + yAng, 310, 415);
+  text("zAng: " + zAng, 530, 415);
+  
+  xGimbal.updateAngle(xAng);
+  yGimbal.updateAngle(yAng);
+  zGimbal.updateAngle(zAng);
+}
+
+void displayPidData() {
+  xGimbal.updatePidAngle(pxAng);
+  yGimbal.updatePidAngle(pyAng);
+  zGimbal.updatePidAngle(pzAng);
 }
 
 void displayMotorData() {
@@ -170,10 +200,10 @@ void displayMotorData() {
     arc(335, 315, 60, 60, 0, ((mt4 - 999)/1000) * TWO_PI);
   } 
   else {
-    float mo1 = truncate((mt1 - 999), 2);
-    float mo2 = truncate((mt2 - 999), 2);
-    float mo3 = truncate((mt3 - 999), 2);
-    float mo4 = truncate((mt4 - 999), 2);
+    float mo1 = truncate(mt1, 2);
+    float mo2 = truncate(mt2, 2);
+    float mo3 = truncate(mt3, 2);
+    float mo4 = truncate(mt4, 2);
     
     throttleOut1.update(mo1/10);
     throttleOut2.update(mo2/10);
