@@ -59,8 +59,7 @@ String tmpStr;
 void setup() {
   size(1280, 800);
   
-  hint(DISABLE_OPENGL_2X_SMOOTH);
-  hint(ENABLE_OPENGL_4X_SMOOTH);
+  smooth();
   
   BankGothic = loadFont("BankGothicBT-Light-24.vlw");
   SegoeUITitle = loadFont("SegoeUI-Light-72.vlw");
