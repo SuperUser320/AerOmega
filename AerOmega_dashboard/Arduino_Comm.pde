@@ -1,3 +1,14 @@
+//// Reading variables ////
+boolean dataRecieved;
+
+//// Parsing variables ////
+int dataIndex;
+char readChar = ' ';
+String tmpStr;
+
+//// transmission variables ////
+int loopCount = 0;
+int updateFreq = 100;
 
 void serialEvent(Serial arduino) {
   

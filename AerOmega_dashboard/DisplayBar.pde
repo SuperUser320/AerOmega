@@ -23,20 +23,28 @@ class DisplayBar {
     
     spos = (ypos + (-value/100) * (sposMax-sposMin)) + (sposMax-sposMin);
     
+    //Slider body
     strokeWeight(1);
     stroke(170);
+    //Slider fill
     fill(255);
     rect(xpos, ypos, swidth, sheight + 4);
+    //Slider background
     fill(0);
-    rect(xpos, ypos, swidth, spos - ypos);
+    rect(xpos, ypos + 2, swidth, spos - ypos - 1);
+    
+    
+    //Slider rectangle body
     fill(180);
     noStroke();
-    rect(xpos - 10, spos, swidth + 20, 5);
+    rect(xpos - 10, spos, swidth + 20, 4);
+    
+    //Slider depth body
     fill(100);
     triangle(xpos - 10, spos + 4, xpos, spos + 4, xpos, spos + 10);
     triangle(xpos + swidth + 10, spos + 4, xpos + swidth + 1, spos + 4, xpos + swidth + 1, spos + 10);
     fill(140);
-    rect(xpos, spos + 5, swidth + 1, 2);
+    rect(xpos, spos + 4, swidth + 1, 2);
     stroke(1);
     
     fill(255);

@@ -16,7 +16,10 @@ Gimbal xGimbal;
 Gimbal yGimbal;
 Gimbal zGimbal;
 
+Button debugButton;  //Enable/Disable debug layout
+Button stateButton;  //Enable/Disable
 Button initButton;
+Button eStopButton;
 
 //// Fonts ////
 PFont BankGothic;
@@ -26,10 +29,6 @@ PFont SegoeUISubTitle;
 
 //// GUI variables ////
 boolean dispQuad = false;
-
-//// transmission variables ////
-int loopCount = 0;
-int updateFreq = 100;
 
 //// control output variables ////
 int throttle;
@@ -48,13 +47,6 @@ float mt1 = 352;
 float mt2 = 532;
 float mt3 = 732;
 float mt4 = 164;
-
-boolean dataRecieved;
-
-//// parsing variables ////
-int dataIndex;
-char readChar = ' ';
-String tmpStr;
 
 void setup() {
   size(1280, 800);
@@ -83,8 +75,10 @@ void setup() {
   yGimbal = new Gimbal(355, 265, 175, false, true);
   zGimbal = new Gimbal(575, 265, 175, true,  true);
   
-  
-  initButton = new Button(975, 720, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
+  debugButton = new Button(975, 590, 260, 35, "Debug Disabled", "Debug Enabled", false);
+  stateButton = new Button(975, 590, 260, 35, "Disabled", "Enabled", false);
+  initButton = new Button(975, 640, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
+  eStopButton = new Button(975, 690, 260, 65, "EMERGENCY STOP", true, "E-STOP ENABLED");
 
   //// ARDUINO ////
   //arduino = new Serial(this, Serial.list()[1], 57600);
@@ -144,11 +138,30 @@ void displayControls() {
   
   throttleBar4.update();
   throttleBar4.display("D: ");
+  
+  //Toggle States button
+  stateButton.update();
+  if (stateButton.buttonPressed()) {
+    ///////////////////////////////
+    //TODO: WRITE CODE FOR TOGGLE//
+    ///////////////////////////////
+    stateButton.toggle();
+  }
+  
   //Quadrotor init button
   initButton.update();
   if (initButton.buttonPressed()) {
     arduino.write("1,1,1,1");
     initButton.lock(true);
+  }
+  
+  //E-STOP Button
+  eStopButton.update();
+  if (eStopButton.buttonPressed()) {
+    //////////////////////////////
+    //TODO: WRITE CODE TO E-STOP//
+    //////////////////////////////
+    eStopButton.lock(true);
   }
 }
 
