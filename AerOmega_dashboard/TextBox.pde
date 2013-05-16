@@ -1,6 +1,5 @@
 class TextBox {
 
-
   int x, y, w, h;
   boolean selectable;
 

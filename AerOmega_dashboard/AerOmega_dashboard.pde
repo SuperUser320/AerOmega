@@ -1,7 +1,10 @@
 import processing.serial.*;
 
 Serial arduino;
-//// GUI elements ////
+
+//////////////////////
+//// GUI ELEMENTS ////
+//////////////////////
 VScrollbar throttleBar1;
 VScrollbar throttleBar2;
 VScrollbar throttleBar3;
@@ -21,32 +24,48 @@ Button stateButton;  //Enable/Disable
 Button initButton;
 Button eStopButton;
 
-//// Fonts ////
+///////////////
+//// FONTS ////
+///////////////
 PFont BankGothic;
 PFont SegoeUI;
 PFont SegoeUITitle;
 PFont SegoeUISubTitle;
 
-//// GUI variables ////
+///////////////////////
+//// GUI VARIABLES ////
+///////////////////////
 boolean dispQuad = false;
 
-//// control output variables ////
+//////////////////////////////////
+//// CONTROL OUTPUT VARIABLES ////
+//////////////////////////////////
 int throttle;
 boolean init = false;
 
-//// dashboard data ////
+////////////////////////
+//// DASHBOARD DATA ////
+////////////////////////
+//Current orientation of quadrotor
 float xAng = 12;
 float yAng = 243;
 float zAng = 146;
 
+//Desired location of quadrotor
 float pxAng = 0;
 float pyAng = 0;
 float pzAng = 0;
 
+//Throttle output of quadrotor (of 1000)
 float mt1 = 352;
 float mt2 = 532;
 float mt3 = 732;
 float mt4 = 164;
+
+///////////////////
+// KEY VARIABLES //
+///////////////////
+boolean keyDown;
 
 void setup() {
   size(1280, 800);
@@ -60,7 +79,9 @@ void setup() {
   //textFont(BankGothic);
   println(Serial.list());
 
+  //////////////////////
   //// GUI ELEMENTS ////
+  //////////////////////
   throttleBar1 = new VScrollbar(550, 500, 30, 220, 1);
   throttleBar2 = new VScrollbar(650, 500, 30, 220, 1);
   throttleBar3 = new VScrollbar(750, 500, 30, 220, 1);
@@ -80,7 +101,9 @@ void setup() {
   initButton = new Button(975, 640, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
   eStopButton = new Button(975, 690, 260, 65, "EMERGENCY STOP", true, "E-STOP ENABLED");
 
+  /////////////////
   //// ARDUINO ////
+  /////////////////
   //arduino = new Serial(this, Serial.list()[1], 57600);
   delay(10);
 }
@@ -220,22 +243,23 @@ void displayMotorData() {
   }
 }
 
-void displaySignal() {
-  if (dataRecieved && loopCount < updateFreq) {
-    
-    loopCount++;
-    
-  } else {
-    loopCount = 0;
-    if (arduino.available() > 0) {
-      fill(0, 255, 0);
-      dataRecieved = true;
-      println("blah");
-    } else {
-      fill(215, 60, 60);
-      dataRecieved = false;
+void keyPressed() {
+  if(!keyDown) {
+    keyDown = true;
+    if(key == ' ') {
+      eStopButton.lock(true);
+      //////////////////////////////
+      //TODO: WRITE CODE TO E-STOP//
+      //////////////////////////////
+    }
+    if(key == '\n') {
+      stateButton.toggle();
+      //////////////////////////////
+      //TODO: WRITE CODE TO E-STOP//
+      //////////////////////////////
     }
   }
-  rect(width - 50, 10, 40, 40);
 }
-
+void keyReleased() {
+  keyDown = false;
+}
