@@ -75,7 +75,7 @@ void setup() {
   yGimbal = new Gimbal(355, 265, 175, false, true);
   zGimbal = new Gimbal(575, 265, 175, true,  true);
   
-  debugButton = new Button(975, 590, 260, 35, "Debug Disabled", "Debug Enabled", false);
+  debugButton = new Button(975, 540, 260, 35, "Debug Disabled", "Debug Enabled", false);
   stateButton = new Button(975, 590, 260, 35, "Disabled", "Enabled", false);
   initButton = new Button(975, 640, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
   eStopButton = new Button(975, 690, 260, 65, "EMERGENCY STOP", true, "E-STOP ENABLED");
@@ -138,6 +138,15 @@ void displayControls() {
   
   throttleBar4.update();
   throttleBar4.display("D: ");
+  
+  //Toggle debug perspective
+  debugButton.update();
+  if (debugButton.buttonPressed()) {
+    ///////////////////////////////
+    //TODO: WRITE CODE FOR TOGGLE//
+    ///////////////////////////////
+    debugButton.toggle();
+  }
   
   //Toggle States button
   stateButton.update();
