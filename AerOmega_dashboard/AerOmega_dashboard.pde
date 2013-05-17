@@ -40,6 +40,15 @@ PFont SegoeUISubTitle;
 ///////////////////////
 boolean debugViewEnabled;
 
+///////////////////
+// KEY VARIABLES //
+///////////////////
+boolean keyDown;
+
+/////////////////////////////////////////
+////// QUADROTOR CONTROL VARIABLES //////
+/////////////////////////////////////////
+
 //////////////////////////////////
 //// CONTROL OUTPUT VARIABLES ////
 //////////////////////////////////
@@ -49,32 +58,47 @@ boolean init = false;
 ////////////////////////
 //// DASHBOARD DATA ////
 ////////////////////////
-//Current orientation of quadrotor
+//// Current orientation of quadrotor ////
 float xAng = 12;
 float yAng = 243;
 float zAng = 146;
 
-//Desired location of quadrotor
+//// Desired location of quadrotor ////
 float pxAng = 0;
 float pyAng = 0;
 float pzAng = 0;
 
-//Throttle output of quadrotor (of 1000)
+//// Throttle output of quadrotor (of 1000) ////
 float mt1 = 352;
 float mt2 = 532;
 float mt3 = 732;
 float mt4 = 164;
 
-///////////////////
-// KEY VARIABLES //
-///////////////////
-boolean keyDown;
+//// PID Values ////
+double kP = 0.4;
+double kI = 0.5;
+double kD = 0;
+//// Aggressive PID values ////
+double kPagg = 0.8;
+double kIagg = 0.5;
+double kDagg = 0;
+//// PID values for height ////
+double kPheight = 0.2;
+double kIheight = 0;
+double kDheight = 0;
+//// PID output limits ////
+long lowerLimit = -500; 
+long upperLimit = 500;
+float pidThreshold = 35.0;
+int pidSampleTime = 50;
 
 void setup() {
   size(1280, 800);
-  
   smooth();
   
+  ////////////////////
+  //// LOAD FONTS ////
+  ////////////////////
   SegoeUITitle = loadFont("SegoeUI-Light-48.vlw");
   SegoeUISubTitle = loadFont("SegoeUI-Light-36.vlw");
   SegoeUI = loadFont("SegoeUI-Light-20.vlw");
@@ -106,10 +130,10 @@ void setup() {
   initButton = new Button(975, 640, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
   eStopButton = new Button(975, 690, 260, 65, "EMERGENCY STOP", true, "E-STOP ENABLED");
 
-  /////////////////
-  //// ARDUINO ////
-  /////////////////
-  //arduino = new Serial(this, Serial.list()[1], 57600);
+  //////////////////////////////////////
+  //// ARDUINO SERIAL COMMUNICATION ////
+  //////////////////////////////////////
+  //arduino = new Serial(this, Serial.list()[1], 57600);  //For reduced packed drop reduce baud
   delay(10);
 }
 
