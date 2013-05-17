@@ -5,10 +5,14 @@ Serial arduino;
 //////////////////////
 //// GUI ELEMENTS ////
 //////////////////////
+SignalIndicator signalIndicator;
+
 VScrollbar throttleBar1;
 VScrollbar throttleBar2;
 VScrollbar throttleBar3;
 VScrollbar throttleBar4;
+
+GuiQuad guiQuad;
 
 DisplayBar throttleOut1;
 DisplayBar throttleOut2;
@@ -27,7 +31,6 @@ Button eStopButton;
 ///////////////
 //// FONTS ////
 ///////////////
-PFont BankGothic;
 PFont SegoeUI;
 PFont SegoeUITitle;
 PFont SegoeUISubTitle;
@@ -35,7 +38,7 @@ PFont SegoeUISubTitle;
 ///////////////////////
 //// GUI VARIABLES ////
 ///////////////////////
-boolean dispQuad = false;
+boolean debugViewEnabled;
 
 //////////////////////////////////
 //// CONTROL OUTPUT VARIABLES ////
@@ -72,20 +75,22 @@ void setup() {
   
   smooth();
   
-  BankGothic = loadFont("BankGothicBT-Light-24.vlw");
-  SegoeUITitle = loadFont("SegoeUI-Light-72.vlw");
-  SegoeUISubTitle = loadFont("SegoeUI-Light-48.vlw");
-  SegoeUI = loadFont("SegoeUI-20.vlw");
-  //textFont(BankGothic);
+  SegoeUITitle = loadFont("SegoeUI-Light-48.vlw");
+  SegoeUISubTitle = loadFont("SegoeUI-Light-36.vlw");
+  SegoeUI = loadFont("SegoeUI-Light-20.vlw");
   println(Serial.list());
 
   //////////////////////
   //// GUI ELEMENTS ////
   //////////////////////
+  signalIndicator = new SignalIndicator(1195, 20, 15, 4);
+  
   throttleBar1 = new VScrollbar(550, 500, 30, 220, 1);
   throttleBar2 = new VScrollbar(650, 500, 30, 220, 1);
   throttleBar3 = new VScrollbar(750, 500, 30, 220, 1);
   throttleBar4 = new VScrollbar(850, 500, 30, 220, 1);
+  
+  guiQuad = new GuiQuad(100, 525, 200);
   
   throttleOut1 = new DisplayBar(80,  500, 30, 220);
   throttleOut2 = new DisplayBar(180, 500, 30, 220);
@@ -96,7 +101,7 @@ void setup() {
   yGimbal = new Gimbal(355, 265, 175, false, true);
   zGimbal = new Gimbal(575, 265, 175, true,  true);
   
-  debugButton = new Button(975, 540, 260, 35, "Debug Disabled", "Debug Enabled", false);
+  debugButton = new Button(975, 540, 260, 35, "Debug View Disabled", "Debug View Enabled", false);
   stateButton = new Button(975, 590, 260, 35, "Disabled", "Enabled", false);
   initButton = new Button(975, 640, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
   eStopButton = new Button(975, 690, 260, 65, "EMERGENCY STOP", true, "E-STOP ENABLED");
@@ -112,13 +117,13 @@ void draw() {
   drawBackground();
   fill(255);
 
-  //displaySignal();
+  signalIndicator.displaySignal();
 
   displayControls();
   displayAngleData();
   displayMotorData();
   displayPidData();
-
+  
   //Send data back at the same speed
   //sendData();
 }
@@ -136,13 +141,13 @@ void drawBackground() {
   
   fill(255);
   textFont(SegoeUITitle);
-  text("AerΩmega | V0.1", 20, 70);
+  text("aerΩmega | V0.1", 20, 70);
   
   textFont(SegoeUISubTitle);
-  text("Attitude Values", 40, 150);
-  text("PID Corrections", 725, 150);
-  text("Motor Values", 40, 480);
-  text("Controls", 500, 480);
+  text("attitude values", 40, 150);
+  text("pid corrections", 725, 150);
+  text("motor values", 40, 480);
+  text("controls", 500, 480);
   
   textFont(SegoeUI);
 }
@@ -165,10 +170,8 @@ void displayControls() {
   //Toggle debug perspective
   debugButton.update();
   if (debugButton.buttonPressed()) {
-    ///////////////////////////////
-    //TODO: WRITE CODE FOR TOGGLE//
-    ///////////////////////////////
     debugButton.toggle();
+    debugViewEnabled = debugButton.enabled;
   }
   
   //Toggle States button
@@ -183,7 +186,7 @@ void displayControls() {
   //Quadrotor init button
   initButton.update();
   if (initButton.buttonPressed()) {
-    arduino.write("1,1,1,1");
+    //arduino.write("1,1,1,1");
     initButton.lock(true);
   }
   
@@ -198,7 +201,6 @@ void displayControls() {
 }
 
 void displayAngleData() {
-  
   xGimbal.updateAngle("X: ", xAng);
   yGimbal.updateAngle("Y: ", yAng);
   zGimbal.updateAngle("Z: ", zAng);
@@ -213,24 +215,10 @@ void displayPidData() {
 void displayMotorData() {
   //Motor Throttles
 
-  if (dispQuad) {
-
-    stroke(255);
-    strokeWeight(5);
-    line(200, 180, 335, 315);
-    line(200, 315, 335, 180);
-    stroke(0);
-    strokeWeight(1);
-    fill(100, 200, 255);
-    rect(245, 225, 45, 45);
-    fill(50, 150, 205);
-    arc(200, 180, 60, 60, 0, ((mt1 - 999)/1000) * TWO_PI);
-    //line(180, 180, );
-    arc(335, 180, 60, 60, 0, ((mt2 - 999)/1000) * TWO_PI);
-    arc(200, 315, 60, 60, 0, ((mt3 - 999)/1000) * TWO_PI);
-    arc(335, 315, 60, 60, 0, ((mt4 - 999)/1000) * TWO_PI);
-  } 
-  else {
+  if (!debugViewEnabled) {
+    guiQuad.draw3dQuad();
+    //Text boxes with motor values below
+  } else {
     float mo1 = truncate(mt1, 2);
     float mo2 = truncate(mt2, 2);
     float mo3 = truncate(mt3, 2);
@@ -241,25 +229,4 @@ void displayMotorData() {
     throttleOut3.update("C: ", mo3/10);
     throttleOut4.update("D: ", mo4/10);
   }
-}
-
-void keyPressed() {
-  if(!keyDown) {
-    keyDown = true;
-    if(key == ' ') {
-      eStopButton.lock(true);
-      //////////////////////////////
-      //TODO: WRITE CODE TO E-STOP//
-      //////////////////////////////
-    }
-    if(key == '\n') {
-      stateButton.toggle();
-      //////////////////////////////
-      //TODO: WRITE CODE TO E-STOP//
-      //////////////////////////////
-    }
-  }
-}
-void keyReleased() {
-  keyDown = false;
 }

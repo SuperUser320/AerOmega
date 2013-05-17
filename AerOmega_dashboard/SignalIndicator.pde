@@ -1,29 +1,63 @@
-/*class SignalIndicator {
-
-  int x, y, indicatorWidth, indicatorHeight;
+class SignalIndicator {
+/*         /
+ *       / |
+ *     / | |
+ *   / | | |
+ */
   
-  SignalIndicator() {
-    
-    
-    
+  //Position variables
+  int x, y, size, bars;
+  
+  //Data variables
+  int signalStrength;
+  
+  //Color variables
+  color signalColor = color(160);
+  color noSignalColor = color(80);
+  color signalAlertColor = color(215, 60, 60);
+  
+  SignalIndicator(int tx, int ty, int tsize, int tbars) {
+    x = tx;
+    y = ty;
+    size = tsize;
+    bars = tbars;
   }
   
   void displaySignal() {
-    if (dataRecieved && loopCount < updateFreq) {
+    
+    //Background triangle
+    noStroke();
+    fill(noSignalColor);
+    triangle(x, y + (size * bars), x + (size * bars), y, x + (size * bars), y + (size * bars));
+    
+    if(signalStrength > 0) {
       
-      loopCount++;
+      fill(signalColor);
+      textFont(SegoeUI);
+      text("signal", x - textWidth("signal") - size, y + size * bars);
       
-    } else {
-      loopCount = 0;
-      if (arduino.available() > 0) {
-        fill(0, 255, 0);
-        dataRecieved = true;
-        println("blah");
+      if(signalStrength <= 1) {
+        fill(signalAlertColor);
       } else {
-        fill(215, 60, 60);
-        dataRecieved = false;
+        fill(signalColor);
       }
+      
+      //Draw indicator bars
+      for(int i = 0; i < signalStrength; i++) {
+        triangle(x + (i * size), y + (size * (bars - i)), x + ((i + 1) * size), y + (size * (bars - (i + 1))), x + ((i + 1) * size), y + (size * (bars - i)));
+        rect(x + (i * size), y + (size * (bars - i)), size, size * i);
+      }
+    } else {
+      //If no communications display no signal
+      fill(signalAlertColor);
+      textFont(SegoeUI);
+      text("no comm.", x - textWidth("no comm.") - size, y + size * bars);
     }
-    rect(width - 50, 10, 40, 40);
   }
-}*/
+  
+  void testSignal() {
+    //////////////////////////
+    //TODO: ADD SIGNAL TEST //
+    //////////////////////////
+  }
+}

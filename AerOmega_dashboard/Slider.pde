@@ -29,10 +29,10 @@ class VScrollbar {
   void update() {
     if (over()) {
       over = true;
-    } 
-    else {
+    } else {
       over = false;
     }
+    
     if (mousePressed && over) {
       locked = true;
     }
@@ -62,15 +62,25 @@ class VScrollbar {
   }
 
   void display(String label) {
+    this.update();
+    ///////////////////////////
+    // Draw background boxes //
+    ///////////////////////////
     stroke(170);
+    
+    //"Filled" background box
     fill(255);
     rect(xpos, ypos, swidth, sheight + 4);
+    //"Empty" background box
     fill(0);
     rect(xpos, ypos, swidth, spos - ypos);
+    
+    /////////////////
+    // Draw handle //
+    /////////////////
     if (over || locked) {
       fill(160);
-    } 
-    else {
+    } else {
       fill(180);
     }
     noStroke();

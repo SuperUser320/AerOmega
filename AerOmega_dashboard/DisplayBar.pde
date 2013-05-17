@@ -31,7 +31,7 @@ class DisplayBar {
     rect(xpos, ypos, swidth, sheight + 4);
     //Slider background
     fill(0);
-    rect(xpos, ypos + 2, swidth, spos - ypos - 1);
+    rect(xpos, ypos, swidth, spos - ypos + 1);
     
     
     //Slider rectangle body

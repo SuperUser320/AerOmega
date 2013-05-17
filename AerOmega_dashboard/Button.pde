@@ -66,39 +66,31 @@ class Button {
   }
 
   void drawButton() {
-    stroke(0);
     if (warningButton) {
       if (locked) {
         buttonColor = warningLockedColor;
         textColor = lockedTextColor;
-      } 
-      else if (hover) {
+      } else if (hover) {
         buttonColor = warningHoverColor;
         textColor = hoverTextColor;
-      } 
-      else if (pressed) {
+      } else if (pressed) {
         buttonColor = warningPressedColor;
         textColor = pressedTextColor;
-      } 
-      else {
+      } else {
         buttonColor = warningReleasedColor;
-        textColor = releasedColor;
+        textColor = releasedTextColor;
       }
-    } 
-    else {
+    } else { 
       if (locked) {
         buttonColor = lockedColor;
         textColor = lockedTextColor;
-      } 
-      else if (hover) {
+      } else if (hover) {
         buttonColor = hoverColor;
         textColor = hoverTextColor;
-      } 
-      else if (pressed) {
+      } else if (pressed) {
         buttonColor = pressedColor;
         textColor = pressedTextColor;
-      } 
-      else {
+      } else {
         buttonColor = releasedColor;
         textColor = releasedTextColor;
       }
