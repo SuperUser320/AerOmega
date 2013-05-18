@@ -1,17 +1,26 @@
 import processing.serial.*;
 
-Serial arduino;
+///////////////////////////////////
+// ==== DASHBOARD VARIABLES ==== //
+///////////////////////////////////
 
 //////////////////////
 //// GUI ELEMENTS ////
 //////////////////////
 SignalIndicator signalIndicator;
 
+//// ATTITUDE VALUES ////
+Gimbal xGimbal;
+Gimbal yGimbal;
+Gimbal zGimbal;
+
+//// THROTTLE VALUES ////
 VScrollbar throttleBar1;
 VScrollbar throttleBar2;
 VScrollbar throttleBar3;
 VScrollbar throttleBar4;
 
+//// CONTROLS ////
 GuiQuad guiQuad;
 
 DisplayBar throttleOut1;
@@ -19,14 +28,30 @@ DisplayBar throttleOut2;
 DisplayBar throttleOut3;
 DisplayBar throttleOut4;
 
-Gimbal xGimbal;
-Gimbal yGimbal;
-Gimbal zGimbal;
-
+Button updateButton;  //Enable/Disable debug layout
 Button debugButton;  //Enable/Disable debug layout
 Button stateButton;  //Enable/Disable
 Button initButton;
 Button eStopButton;
+
+//// PID CORRECTIONS ////
+//// PID Constants ////
+TextBox kPText;
+TextBox kIText;
+TextBox kDText;
+//// Aggressive PID constants ////
+TextBox kPaggText;
+TextBox kIaggText;
+TextBox kDaggText;
+//// PID constants for height ////
+TextBox kPheightText;
+TextBox kIheightText;
+TextBox kDheightText;
+//// PID output limits ////
+TextBox lowerLimitText; 
+TextBox upperLimitText;
+TextBox pidThresholdText;
+TextBox pidSampleTimeText;
 
 ///////////////
 //// FONTS ////
@@ -45,9 +70,10 @@ boolean debugViewEnabled;
 ///////////////////
 boolean keyDown;
 
-/////////////////////////////////////////
-////// QUADROTOR CONTROL VARIABLES //////
-/////////////////////////////////////////
+///////////////////////////////////////////
+// ==== QUADROTOR CONTROL VARIABLES ==== //
+///////////////////////////////////////////
+Serial arduino;
 
 //////////////////////////////////
 //// CONTROL OUTPUT VARIABLES ////
@@ -75,22 +101,25 @@ float mt3 = 732;
 float mt4 = 164;
 
 //// PID Values ////
-double kP = 0.4;
-double kI = 0.5;
-double kD = 0;
+float kP = 0.456;
+float kI = 0.534;
+float kD = 0.001;
 //// Aggressive PID values ////
-double kPagg = 0.8;
-double kIagg = 0.5;
-double kDagg = 0;
+float kPagg = 0.8;
+float kIagg = 0.5;
+float kDagg = 0;
 //// PID values for height ////
-double kPheight = 0.2;
-double kIheight = 0;
-double kDheight = 0;
+float kPheight = 0.2;
+float kIheight = 0;
+float kDheight = 0;
 //// PID output limits ////
 long lowerLimit = -500; 
 long upperLimit = 500;
 float pidThreshold = 35.0;
 int pidSampleTime = 50;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
 
 void setup() {
   size(1280, 800);
@@ -109,26 +138,49 @@ void setup() {
   //////////////////////
   signalIndicator = new SignalIndicator(1195, 20, 15, 4);
   
-  throttleBar1 = new VScrollbar(550, 500, 30, 220, 1);
-  throttleBar2 = new VScrollbar(650, 500, 30, 220, 1);
-  throttleBar3 = new VScrollbar(750, 500, 30, 220, 1);
-  throttleBar4 = new VScrollbar(850, 500, 30, 220, 1);
-  
   guiQuad = new GuiQuad(100, 525, 200);
   
-  throttleOut1 = new DisplayBar(80,  500, 30, 220);
-  throttleOut2 = new DisplayBar(180, 500, 30, 220);
-  throttleOut3 = new DisplayBar(280, 500, 30, 220);
-  throttleOut4 = new DisplayBar(380, 500, 30, 220);
+  //// Motor Output ////
+  throttleOut1 = new DisplayBar(80,  500, 30, 220, "A: ");
+  throttleOut2 = new DisplayBar(180, 500, 30, 220, "B: ");
+  throttleOut3 = new DisplayBar(280, 500, 30, 220, "C: ");
+  throttleOut4 = new DisplayBar(380, 500, 30, 220, "D: ");
   
-  xGimbal = new Gimbal(135, 265, 175, false, true);
-  yGimbal = new Gimbal(355, 265, 175, false, true);
-  zGimbal = new Gimbal(575, 265, 175, true,  true);
+  //// Attitude Values ////
+  xGimbal = new Gimbal(135, 265, 175, false, true, "X: ");
+  yGimbal = new Gimbal(355, 265, 175, false, true, "Y: ");
+  zGimbal = new Gimbal(575, 265, 175, true,  true, "Z: ");
   
+  //// Controls ////
+  throttleBar1 = new VScrollbar(550, 500, 30, 220, 0, "A: ");
+  throttleBar2 = new VScrollbar(650, 500, 30, 220, 0, "B: ");
+  throttleBar3 = new VScrollbar(750, 500, 30, 220, 0, "C: ");
+  throttleBar4 = new VScrollbar(850, 500, 30, 220, 0, "D: ");
+  
+  updateButton = new Button(975, 490, 260, 35, "Send Values", false);
   debugButton = new Button(975, 540, 260, 35, "Debug View Disabled", "Debug View Enabled", false);
   stateButton = new Button(975, 590, 260, 35, "Disabled", "Enabled", false);
   initButton = new Button(975, 640, 260, 35, "INIT QUADROTOR", true, "QUAD ARMED");
   eStopButton = new Button(975, 690, 260, 65, "EMERGENCY STOP", true, "E-STOP ENABLED");
+  
+  //// PID CORRECTIONS ////
+  //// PID Constants ////
+  kPText = new TextBox(780, 175, false, "kP: ");
+  kIText = new TextBox(780, 200, false, "kI: ");
+  kDText = new TextBox(780, 225, false, "kD: ");
+  //// Aggressive PID constants ////
+  kPaggText = new TextBox(780, 275, false, "kPagg: ");
+  kIaggText = new TextBox(780, 300, false, "kIagg: ");
+  kDaggText = new TextBox(780, 325, false, "kDagg: ");
+  //// PID constants for height ////
+  kPheightText = new TextBox(1075, 175, false, "kPheight: ");
+  kIheightText = new TextBox(1075, 200, false, "kIheight: ");
+  kDheightText = new TextBox(1075, 225, false, "kDheight: ");
+  //// PID output limits ////
+  lowerLimitText = new TextBox(1075, 275, false, "lowerLimit: ");
+  upperLimitText = new TextBox(1075, 300, false, "upperLimit: ");
+  pidThresholdText = new TextBox(1075, 325, false, "pidThreshold: ");
+  pidSampleTimeText = new TextBox(1075, 350, false, "pidSampleTime: ");
 
   //////////////////////////////////////
   //// ARDUINO SERIAL COMMUNICATION ////
@@ -146,6 +198,7 @@ void draw() {
   displayControls();
   displayAngleData();
   displayMotorData();
+  displaySetpointData();
   displayPidData();
   
   //Send data back at the same speed
@@ -165,7 +218,7 @@ void drawBackground() {
   
   fill(255);
   textFont(SegoeUITitle);
-  text("aerΩmega | V0.1", 20, 70);
+  text("aerΩmega | v0.1", 20, 70);
   
   textFont(SegoeUISubTitle);
   text("attitude values", 40, 150);
@@ -180,16 +233,24 @@ void displayControls() {
 
   //Main throttle slider
   throttleBar1.update();
-  throttleBar1.display("A: ");
+  throttleBar1.display();
 
   throttleBar2.update();
-  throttleBar2.display("B: ");
+  throttleBar2.display();
   
   throttleBar3.update();
-  throttleBar3.display("C: ");
+  throttleBar3.display();
   
   throttleBar4.update();
-  throttleBar4.display("D: ");
+  throttleBar4.display();
+  
+  //Send data to quadrotor button
+  updateButton.update();
+  if (updateButton.buttonPressed()) {
+    //////////////////////////////////
+    //TODO: WRITE CODE TO SEND DATA //
+    //////////////////////////////////
+  }
   
   //Toggle debug perspective
   debugButton.update();
@@ -225,12 +286,12 @@ void displayControls() {
 }
 
 void displayAngleData() {
-  xGimbal.updateAngle("X: ", xAng);
-  yGimbal.updateAngle("Y: ", yAng);
-  zGimbal.updateAngle("Z: ", zAng);
+  xGimbal.updateAngle(xAng);
+  yGimbal.updateAngle(yAng);
+  zGimbal.updateAngle(zAng);
 }
 
-void displayPidData() {
+void displaySetpointData() {
   xGimbal.updatePidAngle(pxAng);
   yGimbal.updatePidAngle(pyAng);
   zGimbal.updatePidAngle(pzAng);
@@ -248,9 +309,29 @@ void displayMotorData() {
     float mo3 = truncate(mt3, 2);
     float mo4 = truncate(mt4, 2);
     
-    throttleOut1.update("A: ", mo1/10);
-    throttleOut2.update("B: ", mo2/10);
-    throttleOut3.update("C: ", mo3/10);
-    throttleOut4.update("D: ", mo4/10);
+    throttleOut1.update(mo1/10);
+    throttleOut2.update(mo2/10);
+    throttleOut3.update(mo3/10);
+    throttleOut4.update(mo4/10);
   }
+}
+
+void displayPidData() {
+  //// PID Constants ////
+  kPText.update(Float.toString(kP));
+  kIText.update(Float.toString(kI));
+  kDText.update(Float.toString(kD));
+  //// Aggressive PID constants ////
+  kPaggText.update(Float.toString(kPagg));
+  kIaggText.update(Float.toString(kIagg));
+  kDaggText.update(Float.toString(kDagg));
+  //// PID constants for height ////
+  kPheightText.update(Float.toString(kPheight));
+  kIheightText.update(Float.toString(kIheight));
+  kDheightText.update(Float.toString(kDheight));
+  //// PID output limits ////
+  lowerLimitText.update(Float.toString(lowerLimit)); 
+  upperLimitText.update(Float.toString(upperLimit));
+  pidThresholdText.update(Float.toString(pidThreshold));
+  pidSampleTimeText.update(Float.toString(pidSampleTime));
 }

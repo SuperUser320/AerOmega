@@ -10,7 +10,7 @@ class VScrollbar {
   float ratio;
   TextBox textBox;
   
-  VScrollbar (int xp, int yp, int sw, int sh, int l) {
+  VScrollbar (int xp, int yp, int sw, int sh, int l, String label) {
     swidth = sw;
     sheight = sh;
     int heighttowidth = sh - sw;
@@ -23,7 +23,7 @@ class VScrollbar {
     sposMax = ypos + sheight - swidth;
     loose = l;
     
-    textBox = new TextBox(xpos - (int(textWidth("100.0")) + 20)/2 + swidth/2, ypos + sheight + 15, int(textWidth("100.0")) + 20, 20, false);
+    textBox = new TextBox(xpos - (int(textWidth("100.0")) + 20)/2 + swidth/2, ypos + sheight + 15, int(textWidth("100.0")) + 20, 20, false, label);
   }
 
   void update() {
@@ -61,7 +61,7 @@ class VScrollbar {
     }
   }
 
-  void display(String label) {
+  void display() {
     this.update();
     ///////////////////////////
     // Draw background boxes //
@@ -100,7 +100,6 @@ class VScrollbar {
     stroke(1);
     
     fill(255);
-    text(label, textBox.x - int(textWidth(label)), textBox.y + textBox.h - 2);
     textBox.update(Float.toString(truncate(100 - (((spos - ypos)/(sposMax-sposMin)) * 100), 1)));
   }
 

@@ -7,7 +7,7 @@ class DisplayBar {
   int sposMin, sposMax;   // max and min values of slider
   TextBox textBox;
 
-  DisplayBar (int xp, int yp, int sw, int sh) {
+  DisplayBar (int xp, int yp, int sw, int sh, String label) {
     swidth = sw;
     sheight = sh;
     xpos = xp-swidth/2;
@@ -16,10 +16,10 @@ class DisplayBar {
     newspos = spos;
     sposMin = ypos;
     sposMax = ypos + sheight - swidth;
-    textBox = new TextBox(xpos - int(textWidth("100.0") + 20)/2 + swidth/2, ypos + sheight + 15, (int)textWidth("100.0") + 20, 20, false);
+    textBox = new TextBox(xpos - int(textWidth("100.0") + 20)/2 + swidth/2, ypos + sheight + 15, (int)textWidth("100.0") + 20, 20, false, label);
   }
 
-  void update(String label, float value) {
+  void update(float value) {
     
     spos = (ypos + (-value/100) * (sposMax-sposMin)) + (sposMax-sposMin);
     
@@ -48,7 +48,6 @@ class DisplayBar {
     stroke(1);
     
     fill(255);
-    text(label, textBox.x - int(textWidth(label)), textBox.y + textBox.h - 2);
     textBox.update(Float.toString(value));
   }
 }

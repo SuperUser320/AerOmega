@@ -7,15 +7,15 @@ class Gimbal {
   
   TextBox textBox;
   
-  Gimbal (int tx, int ty, int tsize, boolean tisCompass, boolean tshowPid) {
+  Gimbal (int tx, int ty, int tsize, boolean tisCompass, boolean tshowPid, String label) {
     x = tx;
     y = ty;
     size = tsize;
     isCompass = tisCompass;
-    textBox = new TextBox(x - int(textWidth("360.0") + 20)/2, y + size/2 + 20, (int) textWidth("360.0") + 20, 20, false);
+    textBox = new TextBox(x - int(textWidth("360.0") + 20)/2, y + size/2 + 20, (int) textWidth("360.0") + 20, 20, false, label);
   }
 
-  void updateAngle(String label, float inAngle) {
+  void updateAngle(float inAngle) {
     angle = (float) ((inAngle * Math.PI) / 180);
 
     strokeWeight(4);
@@ -65,7 +65,6 @@ class Gimbal {
     }
     
     fill(255);
-    text(label, textBox.x - int(textWidth(label)), textBox.y + textBox.h - 2);
     textBox.update(Float.toString(inAngle));
   }
 
