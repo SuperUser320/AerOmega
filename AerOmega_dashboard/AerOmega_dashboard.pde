@@ -165,22 +165,22 @@ void setup() {
   
   //// PID CORRECTIONS ////
   //// PID Constants ////
-  kPText = new TextBox(780, 175, false, "kP: ");
-  kIText = new TextBox(780, 200, false, "kI: ");
-  kDText = new TextBox(780, 225, false, "kD: ");
+  kPText = new TextBox(780, 175, true, "kP: ");
+  kIText = new TextBox(780, 200, true, "kI: ");
+  kDText = new TextBox(780, 225, true, "kD: ");
   //// Aggressive PID constants ////
-  kPaggText = new TextBox(780, 275, false, "kPagg: ");
-  kIaggText = new TextBox(780, 300, false, "kIagg: ");
-  kDaggText = new TextBox(780, 325, false, "kDagg: ");
+  kPaggText = new TextBox(780, 275, true, "kPagg: ");
+  kIaggText = new TextBox(780, 300, true, "kIagg: ");
+  kDaggText = new TextBox(780, 325, true, "kDagg: ");
   //// PID constants for height ////
-  kPheightText = new TextBox(1075, 175, false, "kPheight: ");
-  kIheightText = new TextBox(1075, 200, false, "kIheight: ");
-  kDheightText = new TextBox(1075, 225, false, "kDheight: ");
+  kPheightText = new TextBox(1075, 175, true, "kPheight: ");
+  kIheightText = new TextBox(1075, 200, true, "kIheight: ");
+  kDheightText = new TextBox(1075, 225, true, "kDheight: ");
   //// PID output limits ////
-  lowerLimitText = new TextBox(1075, 275, false, "lowerLimit: ");
-  upperLimitText = new TextBox(1075, 300, false, "upperLimit: ");
-  pidThresholdText = new TextBox(1075, 325, false, "pidThreshold: ");
-  pidSampleTimeText = new TextBox(1075, 350, false, "pidSampleTime: ");
+  lowerLimitText = new TextBox(1075, 275, true, "lowerLimit: ");
+  upperLimitText = new TextBox(1075, 300, true, "upperLimit: ");
+  pidThresholdText = new TextBox(1075, 325, true, "pidThreshold: ");
+  pidSampleTimeText = new TextBox(1075, 350, true, "pidSampleTime: ");
 
   //////////////////////////////////////
   //// ARDUINO SERIAL COMMUNICATION ////
