@@ -152,10 +152,10 @@ void setup() {
   zGimbal = new Gimbal(575, 265, 175, true,  true, "Z: ");
   
   //// Controls ////
-  throttleBar1 = new VScrollbar(550, 500, 30, 220, 0, "A: ");
-  throttleBar2 = new VScrollbar(650, 500, 30, 220, 0, "B: ");
-  throttleBar3 = new VScrollbar(750, 500, 30, 220, 0, "C: ");
-  throttleBar4 = new VScrollbar(850, 500, 30, 220, 0, "D: ");
+  throttleBar1 = new VScrollbar(550, 500, 30, 220, 1, "A: ");
+  throttleBar2 = new VScrollbar(650, 500, 30, 220, 1, "B: ");
+  throttleBar3 = new VScrollbar(750, 500, 30, 220, 1, "C: ");
+  throttleBar4 = new VScrollbar(850, 500, 30, 220, 1, "D: ");
   
   updateButton = new Button(975, 490, 260, 35, "Send Values", false);
   debugButton = new Button(975, 540, 260, 35, "Debug View Disabled", "Debug View Enabled", false);
