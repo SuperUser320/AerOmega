@@ -5,7 +5,7 @@ class BatteryIndicator {
   float ratio = 1.5;
   
   //Data variables
-  int batteryVoltage;
+  float batteryVoltage;
   float batteryPercent;
   
   //Color variables
@@ -15,6 +15,16 @@ class BatteryIndicator {
   
   //Threshold variables
   float alertThreshold = .2;
+  
+  //State variables
+  boolean enabled = false;
+  boolean locked = false;
+  boolean pressed = false;
+  boolean hover = false;
+  boolean hasBeenPressed = false;
+  boolean pressOriginInside = false;
+  boolean lastPressed = false;
+  boolean lastMouse = false;
   
   BatteryIndicator(int tx, int ty, int size) {
     x = tx;
@@ -44,7 +54,72 @@ class BatteryIndicator {
       
       //Write battery percentage
       textFont(SegoeUI);
-      text(int(batteryPercent * 100) + "%", x - textWidth(int(batteryPercent * 100) + "%") - indicatorHeight/10 , y + indicatorHeight);
+      
+      checkClick();
+      
+      if (buttonPressed()) {
+        toggle();
+      }
+      
+      if (enabled) {
+        text(int(batteryPercent * 100) + "%", x - textWidth(int(batteryPercent * 100) + "%") - indicatorHeight/10 , y + indicatorHeight);
+      } else {
+        text(int(batteryVoltage) + "mV", x - textWidth(int(batteryVoltage) + "mV") - indicatorHeight/10 , y + indicatorHeight);
+      }
+    }
+  }
+  
+  void checkClick() {
+   //mousePressed in button
+    if (mouseX > x && mouseX < (x + indicatorWidth) && mouseY > y && mouseY < (y + indicatorHeight) && !locked) {
+      if (mousePressed) {
+        pressed = true;
+        hover = false;
+      } 
+      else {
+        hover = true;
+        pressed = false;
+      }
+    } 
+    else {
+      hover = false;
+      pressed = false;
+    }
+    
+    //mouseDown in button
+    if (mouseX > x && mouseX < (x + indicatorWidth) && mouseY > y && mouseY < (y + indicatorHeight) && !locked && lastPressed == false && pressed == true && lastMouse == false && mousePressed) {
+      pressOriginInside = true;
+    } else if (!(mouseX > x && mouseX < (x + indicatorWidth) && mouseY > y && mouseY < (y + indicatorHeight)) && !locked && lastPressed == false && pressed == true && lastMouse == false && mousePressed) {
+      pressOriginInside = false;
+    }
+    
+    //mouseReleased in button
+    if (mouseX > x && mouseX < (x + indicatorWidth) && mouseY > y && mouseY < (y + indicatorHeight) && !locked && lastPressed == true && pressed == false && pressOriginInside) {
+      hasBeenPressed = true;
+    } else {
+      hasBeenPressed = false;
+    }
+    
+    lastPressed = pressed;
+    lastMouse = mousePressed;
+  }
+
+  boolean buttonPressed() {
+    if (hasBeenPressed) {
+      //hasBeenPressed = false;
+      return true;
+    } else {
+      //hasBeenPressed = false;
+      return false;
+    }
+  }
+  
+  
+  void toggle() {
+    if (enabled) {
+      enabled  = false;
+    } else {
+      enabled = true;
     }
   }
   

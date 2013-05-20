@@ -304,21 +304,15 @@ void displaySetpointData() {
 
 void displayMotorData() {
   //Motor Throttles
-
-  if (!debugViewEnabled) {
-    guiQuad.draw3dQuad();
-    //Text boxes with motor values below
-  } else {
-    float mo1 = truncate(mt1, 2);
-    float mo2 = truncate(mt2, 2);
-    float mo3 = truncate(mt3, 2);
-    float mo4 = truncate(mt4, 2);
-    
-    throttleOut1.update(mo1/10);
-    throttleOut2.update(mo2/10);
-    throttleOut3.update(mo3/10);
-    throttleOut4.update(mo4/10);
-  }
+  float mo1 = truncate(mt1, 2);
+  float mo2 = truncate(mt2, 2);
+  float mo3 = truncate(mt3, 2);
+  float mo4 = truncate(mt4, 2);
+  
+  throttleOut1.update(mo1/10);
+  throttleOut2.update(mo2/10);
+  throttleOut3.update(mo3/10);
+  throttleOut4.update(mo4/10);
 }
 
 void displayPidData() {
