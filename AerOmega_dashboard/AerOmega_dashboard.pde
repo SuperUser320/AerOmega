@@ -140,7 +140,7 @@ void setup() {
   //// GUI ELEMENTS ////
   //////////////////////
   signalIndicator = new SignalIndicator(1195, 20, 15, 4);
-  batteryIndicator = new BatteryIndicator(1050, 20, 60);
+  batteryIndicator = new BatteryIndicator(1025, 20, 60);
   
   guiQuad = new GuiQuad(100, 525, 200);
   

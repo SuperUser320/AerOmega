@@ -1,7 +1,7 @@
 class BatteryIndicator {
   
   //Position variables
-  int x, y, size;
+  float x, y, indicatorWidth, indicatorHeight;
   float ratio = 1.5;
   
   //Data variables
@@ -16,10 +16,11 @@ class BatteryIndicator {
   //Threshold variables
   float alertThreshold = .2;
   
-  BatteryIndicator(int tx, int ty, int tsize) {
+  BatteryIndicator(int tx, int ty, int size) {
     x = tx;
     y = ty;
-    size = tsize;
+    indicatorWidth = size/ratio;
+    indicatorHeight = size;
   }
   
   void displayBattery() {
@@ -27,8 +28,8 @@ class BatteryIndicator {
     //Background Rectangle
     noStroke();
     fill(backgroundColor);
-    rect(x + (size/ratio)/2 - size/8, y - ratio*2, size/4, ratio*2);
-    rect(x, y, size/ratio, size);
+    rect(x + (indicatorWidth)/2 - indicatorHeight/8, y - ratio*2, indicatorHeight/4, ratio*2);
+    rect(x, y, indicatorWidth, indicatorHeight);
     
     if(batteryPercent != 0) {
       
@@ -39,11 +40,11 @@ class BatteryIndicator {
       }
       
       //Draw Battery Box
-      rect(x, y + (size * (1 - batteryPercent)), size/ratio, size * batteryPercent);
+      rect(x, y + (indicatorHeight * (1 - batteryPercent)), indicatorWidth, indicatorHeight * batteryPercent);
       
       //Write battery percentage
       textFont(SegoeUI);
-      text(int(batteryPercent * 100) + "%", x - textWidth(int(batteryPercent * 100) + "%") - size/10 , y + size);
+      text(int(batteryPercent * 100) + "%", x - textWidth(int(batteryPercent * 100) + "%") - indicatorHeight/10 , y + indicatorHeight);
     }
   }
   
