@@ -1,10 +1,5 @@
 class SignalIndicator {
-/*         /
- *       / |
- *     / | |
- *   / | | |
- */
-  
+
   //Position variables
   int x, y, size, bars;
   

@@ -7,7 +7,10 @@ import processing.serial.*;
 //////////////////////
 //// GUI ELEMENTS ////
 //////////////////////
+
+//// INDICATORS ////
 SignalIndicator signalIndicator;
+BatteryIndicator batteryIndicator;
 
 //// ATTITUDE VALUES ////
 Gimbal xGimbal;
@@ -137,6 +140,7 @@ void setup() {
   //// GUI ELEMENTS ////
   //////////////////////
   signalIndicator = new SignalIndicator(1195, 20, 15, 4);
+  batteryIndicator = new BatteryIndicator(1050, 20, 60);
   
   guiQuad = new GuiQuad(100, 525, 200);
   
@@ -194,6 +198,7 @@ void draw() {
   fill(255);
 
   signalIndicator.displaySignal();
+  batteryIndicator.displayBattery();
 
   displayControls();
   displayAngleData();
