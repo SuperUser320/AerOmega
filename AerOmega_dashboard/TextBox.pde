@@ -91,9 +91,14 @@ class TextBox {
     
     //Handle typing
     if (selected && !charAdded && keyDown) {
-      if (key == '.' || key == '1' || key == '2' || key == '3' || key == '4' || key == '5' || key == '6' || key == '7' || key == '8' || key == '9' || key == '0') {
+      if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5' || key == '6' || key == '7' || key == '8' || key == '9' || key == '0') {
         inputText += key;
       }
+      //Handle decimal
+      if (key == '.' && !inputText.contains(".")) { 
+        inputText += key;
+      }
+      //Handle backspace
       if (key == 8 && inputText.length() > 0) {
         inputText = inputText.substring(0,inputText.length() - 1);
       }
