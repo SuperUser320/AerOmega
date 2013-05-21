@@ -135,7 +135,7 @@ class Button {
     //mouseDown in button
     if (mouseX > x && mouseX < (x + buttonWidth) && mouseY > y && mouseY < (y + buttonHeight) && !locked && lastPressed == false && pressed == true && lastMouse == false && mousePressed) {
       pressOriginInside = true;
-    } else if (!(mouseX > x && mouseX < (x + buttonWidth) && mouseY > y && mouseY < (y + buttonHeight)) && !locked && lastPressed == false && pressed == true && lastMouse == false && mousePressed) {
+    } else if (!(mouseX > x && mouseX < (x + buttonWidth) && mouseY > y && mouseY < (y + buttonHeight)) && !locked) {
       pressOriginInside = false;
     }
     
@@ -153,10 +153,8 @@ class Button {
 
   boolean buttonPressed() {
     if (hasBeenPressed) {
-      //hasBeenPressed = false;
       return true;
     } else {
-      //hasBeenPressed = false;
       return false;
     }
   }

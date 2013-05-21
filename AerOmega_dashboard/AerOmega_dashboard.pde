@@ -73,6 +73,11 @@ boolean debugViewEnabled;
 ///////////////////
 boolean keyDown;
 
+/////////////////////
+// MOUSE VARIABLES //
+/////////////////////
+boolean mouseReleased;
+
 ///////////////////////////////////////////
 // ==== QUADROTOR CONTROL VARIABLES ==== //
 ///////////////////////////////////////////
@@ -88,38 +93,38 @@ boolean init = false;
 //// DASHBOARD DATA ////
 ////////////////////////
 //// Current orientation of quadrotor ////
-float xAng = 12;
-float yAng = 243;
-float zAng = 146;
+float xAng;
+float yAng;
+float zAng;
 
 //// Desired location of quadrotor ////
-float pxAng = 0;
-float pyAng = 0;
-float pzAng = 0;
+float pxAng;
+float pyAng;
+float pzAng;
 
 //// Throttle output of quadrotor (of 1000) ////
-float mt1 = 352;
-float mt2 = 532;
-float mt3 = 732;
-float mt4 = 164;
+float mt1;
+float mt2;
+float mt3;
+float mt4;
 
 //// PID Values ////
-float kP = 0.456;
-float kI = 0.534;
-float kD = 0.001;
+float kP;
+float kI;
+float kD;
 //// Aggressive PID values ////
-float kPagg = 0.8;
-float kIagg = 0.5;
-float kDagg = 0;
+float kPagg;
+float kIagg;
+float kDagg;
 //// PID values for height ////
-float kPheight = 0.2;
-float kIheight = 0;
-float kDheight = 0;
+float kPheight;
+float kIheight;
+float kDheight;
 //// PID output limits ////
-long lowerLimit = -500; 
-long upperLimit = 500;
-float pidThreshold = 35.0;
-int pidSampleTime = 50;
+long lowerLimit; 
+long upperLimit;
+float pidThreshold;
+int pidSampleTime;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
