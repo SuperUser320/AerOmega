@@ -4,10 +4,16 @@ class TextBox {
   String label;
   String inputText;
   
+  color cursorColorDark = color(100);
+  color cursorColorLight = color(170);
+  color selectedColor = color(60);
+  color releasedColor = color(100);
+  color hoverColor = color(80);
+  boolean darkCursor = false;
+  
   boolean selectable;
   boolean fitText;
   
-  boolean enabled = false;
   boolean locked = false;
   boolean pressed = false;
   boolean selected = false;
@@ -36,7 +42,7 @@ class TextBox {
     label = tlabel;
   }
   
-  void update(String input) {
+  float update(String input) {
     if (selectable) {
       //mousePressed in text box
       if (mouseX > x && mouseX < (x + w) && mouseY > y && mouseY < (y + h) && !locked) {
@@ -84,16 +90,26 @@ class TextBox {
     }
     
     //Handle typing
-      if (selected && !charAdded && keyDown) {
+    if (selected && !charAdded && keyDown) {
       if (key == '.' || key == '1' || key == '2' || key == '3' || key == '4' || key == '5' || key == '6' || key == '7' || key == '8' || key == '9' || key == '0') {
         inputText += key;
       }
+      if (key == 8 && inputText.length() > 0) {
+        inputText = inputText.substring(0,inputText.length() - 1);
+      }
+      
       charAdded = true;
     } else if (!selected) {
       inputText = input;
     }
     
     drawTextBox();
+    
+    if (!(inputText.length() > 0)) {
+      return 0.0;
+    } else {
+      return float(inputText);
+    }
   }
   
   private void drawTextBox() {
@@ -111,8 +127,35 @@ class TextBox {
       if (w == 0) {
         w = int(textWidth(inputText) + 10);
       }
+      
+      if (selected) {
+          fill(selectedColor);
+        } else if (hover) {
+          fill(hoverColor);
+        } else {
+          fill(releasedColor);
+      }
+        
+      if (selected) {
+        if (frameCount % 20 == 0) {
+          if (darkCursor) {
+            darkCursor = false;
+          } else { 
+            darkCursor = true;
+          }
+        }
+        
+        if (darkCursor) {
+          stroke(cursorColorDark);
+        } else {
+          stroke(cursorColorLight);
+        }
+      }
+      
       rect(x - 4, y , w + 6, h);
+      
       fill(255);
+      
       text(label, x - textWidth(label) - 5, y + h - 2);
       text(inputText, x + w - int(textWidth(inputText)), y + h - 2);
   }
