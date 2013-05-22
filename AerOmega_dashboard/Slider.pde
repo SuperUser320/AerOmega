@@ -6,6 +6,9 @@ class VScrollbar {
   int sposMin, sposMax;   // max and min values of slider
   int loose;              // how loose/heavy
   boolean over;           // is the mouse over the slider?
+  boolean pressOriginInside;
+  boolean pressed;
+  boolean lastPressed;
   boolean locked;
   float ratio;
   TextBox textBox;
@@ -33,7 +36,21 @@ class VScrollbar {
       over = false;
     }
     
-    if (mousePressed && over) {
+    if (mouseX > xpos && mouseX < (xpos + swidth) && mouseY > ypos && mouseY < (ypos + sheight) && mousePressed) {
+      pressed = true;
+    } 
+    else {
+      pressed = false;
+    }
+    
+    //mouseDown in button
+    if (mouseX > xpos && mouseX < (xpos + swidth) && mouseY > ypos && mouseY < (ypos + sheight) && lastPressed == false && pressed == true && mousePressed) {
+      pressOriginInside = true;
+    } else if (!(mouseX > xpos && mouseX < (xpos + swidth) && mouseY > ypos && mouseY < (ypos + sheight))) {
+      pressOriginInside = false;
+    }
+    
+    if (mousePressed && over && pressOriginInside) {
       locked = true;
     }
     if (!mousePressed) {
@@ -45,6 +62,8 @@ class VScrollbar {
     if (abs(newspos - spos) > 1) {
       spos = spos + (newspos-spos)/loose;
     }
+    
+    lastPressed = mousePressed;
   }
 
   int constrain(int val, int minv, int maxv) {

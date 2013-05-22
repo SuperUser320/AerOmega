@@ -15,7 +15,7 @@ class DisplayBar {
     spos = ypos + sheight - swidth;
     newspos = spos;
     sposMin = ypos;
-    sposMax = ypos + sheight - swidth;
+    sposMax = ypos + sheight - 5;
     textBox = new TextBox(xpos - int(textWidth("100.0") + 20)/2 + swidth/2, ypos + sheight + 15, (int)textWidth("100.0") + 20, 20, false, label);
   }
 

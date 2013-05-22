@@ -102,6 +102,10 @@ class TextBox {
       if (key == 8 && inputText.length() > 0) {
         inputText = inputText.substring(0,inputText.length() - 1);
       }
+      //Handle newline
+      if (key == '\n') {
+        selected = false;
+      }
       
       charAdded = true;
     } else if (!selected) {

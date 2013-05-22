@@ -24,8 +24,6 @@ VScrollbar throttleBar3;
 VScrollbar throttleBar4;
 
 //// CONTROLS ////
-GuiQuad guiQuad;
-
 DisplayBar throttleOut1;
 DisplayBar throttleOut2;
 DisplayBar throttleOut3;
@@ -126,7 +124,8 @@ long upperLimit;
 float pidThreshold;
 int pidSampleTime;
 
-
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 void setup() {
@@ -146,8 +145,6 @@ void setup() {
   //////////////////////
   signalIndicator = new SignalIndicator(1195, 20, 15, 4);
   batteryIndicator = new BatteryIndicator(1025, 20, 60);
-  
-  guiQuad = new GuiQuad(100, 525, 200);
   
   //// Motor Output ////
   throttleOut1 = new DisplayBar(80,  500, 30, 220, "A: ");
@@ -194,7 +191,7 @@ void setup() {
   //////////////////////////////////////
   //// ARDUINO SERIAL COMMUNICATION ////
   //////////////////////////////////////
-  //arduino = new Serial(this, Serial.list()[1], 57600);  //For reduced packed drop reduce baud
+  //arduino = new Serial(this, Serial.list()[1], 9600);  //For reduced packed drop reduce baud
   delay(10);
 }
 
