@@ -11,10 +11,10 @@ int loopCount = 0;
 int updateFreq = 100;
 
 void serialEvent(Serial arduino) {
-  
   // only run if imu data is available else idle or parse data // make main cpu request data later //
   if (arduino.available() > 0) {
     readChar = char(arduino.read());
+    println(readChar);
     // start looking for data after '\n' //
     if (readChar == '\n') {
       dataIndex = 0;
