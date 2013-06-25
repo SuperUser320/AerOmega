@@ -38,6 +38,17 @@ int loopCount = 0;
 int updateFreq = 50;
 
 /////////////////////////
+//// Battery Voltage ////
+/////////////////////////
+double battVoltage;
+
+//////////////////////////////
+//// Heights from sensors ////
+//////////////////////////////
+double hBar;
+double hIR;
+
+/////////////////////////
 //// Angles from IMU ////
 /////////////////////////
 double xAng;
@@ -106,7 +117,7 @@ float mt4;
 
 void setup() {
   // Open serial lines on 57600 baud //
-  Serial.begin(9600);
+  Serial.begin(57600);
   Serial1.begin(57600);
   Serial.write("WARNING: MOTORS MAY BE ALREADY INITIALIZED, CHECK IF NECESSARY");
  

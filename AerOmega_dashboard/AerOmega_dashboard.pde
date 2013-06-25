@@ -191,7 +191,7 @@ void setup() {
   //////////////////////////////////////
   //// ARDUINO SERIAL COMMUNICATION ////
   //////////////////////////////////////
-  arduino = new Serial(this, Serial.list()[0], 9600);  //For reduced packed drop reduce baud
+  arduino = new Serial(this, Serial.list()[1], 57600);  //For reduced packed drop reduce baud
   delay(10);
 }
 
