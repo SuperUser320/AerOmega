@@ -3,21 +3,21 @@
 
 /***********************************************************
  *  reference IMU output:
- *  !ANG:0.40,0.09,-10.13
- *  !ANG:0.48,0.12,-10.22
- *  !ANG:0.41,0.16,-10.29
- *  !ANG:0.42,0.11,-10.35
- *  !ANG:0.43,0.14,-10.40
- *  !ANG:0.43,0.16,-10.44
- *  !ANG:0.42,0.17,-10.49
+ *  !ANG:0.40,0.09,-10.13,
+ *  !ANG:0.48,0.12,-10.22,
+ *  !ANG:0.41,0.16,-10.29,
+ *  !ANG:0.42,0.11,-10.35,
+ *  !ANG:0.43,0.14,-10.40,
+ *  !ANG:0.43,0.16,-10.44,
+ *  !ANG:0.42,0.17,-10.49,
  *
  *  reference Quadrotor:
  *        x-                8 - 11 motors
  *   !8-m1 9-m2             A0 - IR distance sensor
- *      \   /          \
- *       \ /         z+ |
- * y-     A0    y+     /
- *       / \         |_
+ *      \   /        |‾
+ *       \ /           \
+ * y-     A0    y+  z+  |
+ *       / \           /
  *      /   \
  *   11-m3 !10-m4
  *        x+
@@ -35,7 +35,18 @@ String tmpUsrStr;
 //// Dashboard Data ////
 ////////////////////////
 int loopCount = 0;
-int updateFreq = 100;
+int updateFreq = 50;
+
+/////////////////////////
+//// Battery Voltage ////
+/////////////////////////
+double battVoltage;
+
+//////////////////////////////
+//// Heights from sensors ////
+//////////////////////////////
+double hBar;
+double hIR;
 
 /////////////////////////
 //// Angles from IMU ////
@@ -43,14 +54,6 @@ int updateFreq = 100;
 double xAng;
 double yAng;
 double zAng;
-
-//////////////////////////////////
-//// Used in parsing IMU data ////
-//////////////////////////////////
-String tmpStr;
-String newTmpStr;
-String readChar;
-int dataIndexAng; // 0-do nothing; 1-xAng; 2-yAng; 3-zAng;
 
 ////////////////////////
 //// balance values ////
@@ -112,34 +115,22 @@ float mt2;
 float mt3;
 float mt4;
 
-///////////////////////////////////////////
-//// task values | 0 = false; 1 = true ////
-///////////////////////////////////////////
-int taskLand; 
-int descentCounter = 0;
-int descentSpeed = 100; //lower number = higher speed descent
-
 void setup() {
   // Open serial lines on 57600 baud //
   Serial.begin(57600);
   Serial1.begin(57600);
-  Serial.write("WARNING: MOTORS MAY BE ALREADY INITIATED, CHECK IF NECESSARY");
+  Serial.write("WARNING: MOTORS MAY BE ALREADY INITIALIZED, CHECK IF NECESSARY");
  
   initPids();
   
 }
 
 void loop() {
-  parseImuData();
+  //parseImuData();
   parseUserData();
   updateDashboard();
   pidMode();
   xPid.Compute();
   yPid.Compute();
   updateMotors();
-  
-  if ( taskLand != 0 ) {
-    land();
-  }
-  //delay(10);
 }

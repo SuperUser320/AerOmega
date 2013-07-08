@@ -4,12 +4,15 @@ class Gimbal {
   float angle = 0;
   boolean isCompass;
   boolean showPid;
-
-  Gimbal (int tx, int ty, int tsize, boolean tisCompass, boolean tshowPid) {
+  
+  TextBox textBox;
+  
+  Gimbal (int tx, int ty, int tsize, boolean tisCompass, boolean tshowPid, String label) {
     x = tx;
     y = ty;
     size = tsize;
     isCompass = tisCompass;
+    textBox = new TextBox(x - int(textWidth("360.0") + 20)/2, y + size/2 + 20, (int) textWidth("360.0") + 20, 20, false, label);
   }
 
   void updateAngle(float inAngle) {
@@ -40,8 +43,13 @@ class Gimbal {
     } else {
 
       textFont(SegoeUI);
-      text("N", x - (textWidth("N") / 2), y - (size/2) - (size * 0.1));
-      text("S", x - (textWidth("S") / 2), y + (size/2) + (size * 0.2));
+      fill(50);
+      strokeWeight(2);
+      stroke(180);
+      float nDotSize = 9;
+      ellipse(x, y - (nDotSize/2) - (size/2) - (20 + nDotSize/2), nDotSize, nDotSize);
+      //text("N", x - (textWidth("N") / 2), y - (size/2) - (size * 0.1));
+      //text("S", x - (textWidth("S") / 2), y + (size/2) + (size * 0.2));
 
       pushMatrix();
       strokeWeight(0);
@@ -55,6 +63,9 @@ class Gimbal {
       quad(-size/15, 0, 0, size * 0.6, size/15, 0, 0, -size * 0.05);
       popMatrix();
     }
+    
+    fill(255);
+    textBox.update(Float.toString(inAngle));
   }
 
   void updatePidAngle(float pidAngle) {

@@ -32,8 +32,6 @@ void storeUserVal() {
 
   case 1:
 
-    taskLand = int(tmpUsrStr.toFloat());
-
     break;
    
   case 2:
