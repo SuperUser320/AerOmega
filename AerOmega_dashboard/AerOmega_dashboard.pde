@@ -30,8 +30,8 @@ DisplayBar throttleOut3;
 DisplayBar throttleOut4;
 
 Button updateButton;  //Enable/Disable debug layout
-Button debugButton;  //Enable/Disable debug layout
-Button stateButton;  //Enable/Disable
+Button debugButton;   //Enable/Disable debug layout
+Button stateButton;   //Enable/Disable
 Button initButton;
 Button eStopButton;
 
@@ -48,11 +48,6 @@ TextBox kDaggText;
 TextBox kPheightText;
 TextBox kIheightText;
 TextBox kDheightText;
-//// PID output limits ////
-TextBox lowerLimitText; 
-TextBox upperLimitText;
-TextBox pidThresholdText;
-TextBox pidSampleTimeText;
 
 ///////////////
 //// FONTS ////
@@ -87,9 +82,9 @@ Serial arduino;
 int throttle;
 boolean init = false;
 
-////////////////////////
-//// DASHBOARD DATA ////
-////////////////////////
+///////////////////////
+//// ATTITUDE DATA ////
+///////////////////////
 //// Current orientation of quadrotor ////
 float xAng;
 float yAng;
@@ -99,13 +94,22 @@ float zAng;
 float pxAng;
 float pyAng;
 float pzAng;
+float pHeight;
 
+
+/////////////////////
+//// OUTPUT DATA ////
+/////////////////////
 //// Throttle output of quadrotor (of 1000) ////
 float mt1;
 float mt2;
 float mt3;
 float mt4;
 
+
+//////////////////
+//// PID DATA ////
+//////////////////
 //// PID Values ////
 float kP;
 float kI;
@@ -118,11 +122,23 @@ float kDagg;
 float kPheight;
 float kIheight;
 float kDheight;
-//// PID output limits ////
-long lowerLimit; 
-long upperLimit;
-float pidThreshold;
-int pidSampleTime;
+
+
+/////////////////////
+//// SENSOR DATA ////
+/////////////////////
+//// Sensor altitude ////
+float heightBar;
+float heightIr;
+
+//// Battery Reading - placeholder (use onboard hardware, sensor not implemented) ////
+float battVoltage;
+
+
+//////////////////////
+//// FLEIGHT DATA ////
+//////////////////////
+float upTime;
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -182,11 +198,6 @@ void setup() {
   kPheightText = new TextBox(1075, 175, true, "kPheight: ");
   kIheightText = new TextBox(1075, 200, true, "kIheight: ");
   kDheightText = new TextBox(1075, 225, true, "kDheight: ");
-  //// PID output limits ////
-  lowerLimitText = new TextBox(1075, 275, true, "lowerLimit: ");
-  upperLimitText = new TextBox(1075, 300, true, "upperLimit: ");
-  pidThresholdText = new TextBox(1075, 325, true, "pidThreshold: ");
-  pidSampleTimeText = new TextBox(1075, 350, true, "pidSampleTime: ");
 
   //////////////////////////////////////
   //// ARDUINO SERIAL COMMUNICATION ////
@@ -299,9 +310,9 @@ void displayAngleData() {
 }
 
 void displaySetpointData() {
-  xGimbal.updatePidAngle(pxAng);
-  yGimbal.updatePidAngle(pyAng);
-  zGimbal.updatePidAngle(pzAng);
+  xGimbal.updatePidAngle((float)(pxAng*(Math.PI/180)));
+  yGimbal.updatePidAngle((float)(pyAng*(Math.PI/180)));
+  zGimbal.updatePidAngle((float)(pzAng*(Math.PI/180)));
 }
 
 void displayMotorData() {
@@ -330,9 +341,4 @@ void displayPidData() {
   kPheightText.update(Float.toString(kPheight));
   kIheightText.update(Float.toString(kIheight));
   kDheightText.update(Float.toString(kDheight));
-  //// PID output limits ////
-  lowerLimitText.update(Float.toString(lowerLimit)); 
-  upperLimitText.update(Float.toString(upperLimit));
-  pidThresholdText.update(Float.toString(pidThreshold));
-  pidSampleTimeText.update(Float.toString(pidSampleTime));
 }

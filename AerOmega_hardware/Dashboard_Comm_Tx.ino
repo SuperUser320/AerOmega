@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////  case:                                                                                           Communication Example:                                                                                                                                        ////
+////  case:                                                                                           Communication Example:     (to dashboard)                                                                                                                     ////
 ////  [0]   case:0,xAng:[...],yAng:[...],zAng:[...],m1:[...],m2:[...],m3:[...],m4:[...],hBar:[...],hIR:[...],bat:[...],throt:[...],tR:[...],tP:[...],tH:[...],kP:[...],kI:[...],kD:[...],kPa:[...],kIa:[...],kDa:[...],kPh:[...],kIh:[...],kDh:[...],[timeStamp],   ////
 ////  [1]   case,xAng,yAng,zAng,m1,m2,m3,m4,hBar,hIR,bat,tT,tR,tP,tH,kP,kI,kD,kPa,kIa,kDa,kPh,kIh,kDh,timeStamp,                                                                                                                                                    ////
 ////  [2]   case,xAng,yAng,zAng,m1,m2,m3,m4,hBar,hIR,bat,timeStamp,                                                                                                                                                                                                 ////
@@ -22,7 +22,7 @@
 ////     [timeStamp]       -  Timestamp, not labled, milliseconds of uptime                                                                                                                                                                                         ////
 ////                                                                                                                                                                                                                                                                ////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int feedbackCase = 2; //0 = debugFullHuman, 1 = debugFull, 2 = normal, 3 = normal w/o timestamp
+int feedbackCase = 1; //0 = debugFullHuman, 1 = debugFull, 2 = normal, 3 = normal w/o timestamp
 
 void updateDashboard() {
   if (loopCount > updateFreq) {
@@ -124,7 +124,6 @@ void updateDashboard() {
       Serial.print(zAng);
       Serial.print("\t");
       
-      Serial.print("\t");
       Serial.print(mt1);
       Serial.print("\t");
       Serial.print(mt2);
@@ -185,7 +184,6 @@ void updateDashboard() {
       Serial.print(zAng);
       Serial.print("\t");
       
-      Serial.print("\t");
       Serial.print(mt1);
       Serial.print("\t");
       Serial.print(mt2);
@@ -218,7 +216,6 @@ void updateDashboard() {
       Serial.print(zAng);
       Serial.print("\t");
       
-      Serial.print("\t");
       Serial.print(mt1);
       Serial.print("\t");
       Serial.print(mt2);

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////  case:                                                                                           Communication Example:                                                                                                                                        ////
+////  case:                                                                                           Communication Example:  (from quadrotor)                                                                                                                      ////
 ////  [0]   case:0,xAng:[...],yAng:[...],zAng:[...],m1:[...],m2:[...],m3:[...],m4:[...],hBar:[...],hIR:[...],bat:[...],throt:[...],tR:[...],tP:[...],tH:[...],kP:[...],kI:[...],kD:[...],kPa:[...],kIa:[...],kDa:[...],kPh:[...],kIh:[...],kDh:[...],[timeStamp],   ////
 ////  [1]   case,xAng,yAng,zAng,m1,m2,m3,m4,hBar,hIR,bat,tT,tR,tP,tH,kP,kI,kD,kPa,kIa,kDa,kPh,kIh,kDh,timeStamp,                                                                                                                                                    ////
 ////  [2]   case,xAng,yAng,zAng,m1,m2,m3,m4,hBar,hIR,bat,timeStamp,                                                                                                                                                                                                 ////
@@ -23,6 +23,8 @@
 ////                                                                                                                                                                                                                                                                ////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//// Type of feedback recieved ////
+int feedbackCase;
 
 //// Reading variables ////
 boolean dataRecieved;
@@ -55,8 +57,8 @@ void serialEvent(Serial arduino) {
       readChar = ' ';
       tmpStr = "";
     }
-    // throw away data after index of 2 //
-    if (dataIndex < 11 || readChar == ' ') {
+    // throw away data after index of 25 //
+    if (dataIndex < 25 || readChar == ' ') {
       tmpStr += readChar;
     }
   }
@@ -64,53 +66,125 @@ void serialEvent(Serial arduino) {
 
 //// Store values read from IMU ////
 void storeVal() {
-  switch(dataIndex - 1) {
+  switch(dataIndex) {
   case 0:
-
-    yAng = float(tmpStr);     // x and y axies are switched //
-
+    feedbackCase = int(tmpStr);
     break;
-
+    
+  ////  Attitude Feedback ////
   case 1:
-
-    xAng = float(tmpStr);
-
+    yAng = float(tmpStr);     // x and y axies are switched //
     break;
 
   case 2:
-
-    zAng = float(tmpStr);
-
+    xAng = float(tmpStr);
     break;
 
   case 3:
-
-    mt1 = float(tmpStr);
-
+    zAng = float(tmpStr);
     break;
 
+
+  ////  Motor Outputs ////
   case 4:
-
-    mt2 = float(tmpStr);
-
+    mt1 = float(tmpStr);
     break;
 
   case 5:
-
-    mt3 = float(tmpStr);
-
+    mt2 = float(tmpStr);
     break;
 
   case 6:
+    mt3 = float(tmpStr);
+    break;
 
+  case 7:
     mt4 = float(tmpStr);
+    break;
+    
 
+  //// Sensor Altitidue ////
+  case 8:
+    heightBar = float(tmpStr);
+    break;
+
+  case 9:
+    heightIr = float(tmpStr);
+    break;
+  
+
+  //// Battery Feedback ////
+  case 10:
+    battVoltage = float(tmpStr);
+    break;
+    
+    
+  //// PID Setpoints ////
+  case 11:
+    pHeight = float(tmpStr);
+    break;
+    
+  case 12:
+    pxAng = float(tmpStr);
+    break;
+    
+  case 13:
+    pyAng = float(tmpStr);
+    break;
+  
+  case 14:
+    pzAng = float(tmpStr);
+    break;
+    
+    
+  //// PID Parameters ////
+  case 15:
+    kP = float(tmpStr);
+    break;
+    
+  case 16:
+    kI = float(tmpStr);
+    break;
+    
+  case 17:
+    kD = float(tmpStr);
+    break;
+    
+  case 18:
+    kPagg = float(tmpStr);
+    break;
+    
+  case 19:
+    kIagg = float(tmpStr);
+    break;
+    
+  case 20:
+    kDagg = float(tmpStr);
+    break;
+    
+  case 21:
+    kPheight = float(tmpStr);
+    break;
+    
+  case 22:
+    kIheight = float(tmpStr);
+    break;
+    
+  case 23:
+    kDheight = float(tmpStr);
+    break;  
+    
+  case 24:
+    upTime = float(tmpStr);
     break;
   }
 }
 
 void sendData()
 {
-  arduino.write("DAT:" + ((10 * throttle) + 1000) + ",");
+  if(eStopButton.buttonPressed()) {
+    arduino.write("0\n");
+  }
+  
+  arduino.write("");
 }
-
