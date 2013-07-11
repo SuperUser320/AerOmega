@@ -34,9 +34,9 @@ int readUsrInt;
 float readUsrFloat;
 double readUsrDouble;
 String readUsrChar;
-byte valueId;
+byte valueId = -1;
 // each location represents an id and datatype associated //
-byte dataType [] = {0,0,4,4,4,4,4,4,4,4,4};
+byte dataType [] = {0,0,4,4,4,4,4,4};
 // 0  initialize motors
 // 1  enable/disable
 // 2  kP
@@ -53,7 +53,7 @@ byte dataType [] = {0,0,4,4,4,4,4,4,4,4,4};
 //// Dashboard Data ////
 ////////////////////////
 int loopCount = 0;
-int updateFreq = 50;
+int updateFreq = 500;
 
 /////////////////////////
 //// Battery Voltage ////
@@ -91,15 +91,15 @@ double height = 100; // desired height
 ////////////////////
 //// PID Values ////
 ////////////////////
-const double kP = 0.4;
-const double kI = 0.5;
-const double kD = 0;
-const double kPagg = 0.8;
-const double kIagg = 0.5;
-const double kDagg = 0;
-const double kPheight = 0.2;
-const double kIheight = 0;
-const double kDheight = 0;
+double kP = 0.4;
+double kI = 0.5;
+double kD = 0;
+double kPagg = 0.8;
+double kIagg = 0.5;
+double kDagg = 0;
+double kPheight = 0.2;
+double kIheight = 0;
+double kDheight = 0;
 
 const long lowerLimit = -500; 
 const long upperLimit = 500; // lowered for testing purposes
@@ -115,7 +115,7 @@ PID yPid(&yAng, &tRoll, &roll, kP, kI, kD, AUTOMATIC);
 //////////////////////////      
 //// QUADROTOR STATES ////
 //////////////////////////
-byte quadState;
+byte quadState = 1;
  
 /////////////////////////////////      
 //// Motor Controller Values ////
@@ -142,15 +142,12 @@ void setup() {
   // Open serial lines on 57600 baud //
   Serial.begin(57600);
   Serial1.begin(57600);
-  Serial.write("WARNING: MOTORS MAY BE ALREADY INITIALIZED, CHECK IF NECESSARY");
- 
-  initPids();
-  
+  Serial.write("WARNING: MOTORS MAY BE ALREADY INITIALIZED, UNPLUG BATTERY NECESSARY");
+  delay(1000);
 }
 
 void loop() {
-  //parseImuData();
-  parseUserData();
+  //parseUserData();
   updateDashboard();
   pidMode();
   xPid.Compute();

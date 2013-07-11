@@ -29,8 +29,8 @@ void updateDashboard() {
     switch (feedbackCase) {
     
     case 0:
-      Serial.print("case: ");
-      Serial.print(feedbackCase);
+      Serial.print("state: ");
+      Serial.print(quadState);
       Serial.print("\t");
       
       Serial.print("xAng: ");
@@ -114,7 +114,7 @@ void updateDashboard() {
     break;
     
     case 1:
-      Serial.print(feedbackCase);
+      Serial.print(quadState);
       Serial.print("\t");
       
       Serial.print(xAng);
@@ -174,7 +174,7 @@ void updateDashboard() {
     break;
     
     case 2:
-      Serial.print(feedbackCase);
+      Serial.print(quadState);
       Serial.print("\t");
       
       Serial.print(xAng);
@@ -206,7 +206,7 @@ void updateDashboard() {
     break;
     
     case 3:
-      Serial.print(feedbackCase);
+      Serial.print(quadState);
       Serial.print("\t");
       
       Serial.print(xAng);

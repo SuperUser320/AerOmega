@@ -159,6 +159,13 @@ class Button {
     }
   }
 
+  boolean buttonLocked() {
+    if (locked) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   void lock(boolean lockButton) {
     locked = lockButton;
     pressed = false;

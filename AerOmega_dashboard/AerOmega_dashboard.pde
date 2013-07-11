@@ -75,6 +75,7 @@ boolean mouseReleased;
 // ==== QUADROTOR CONTROL VARIABLES ==== //
 ///////////////////////////////////////////
 Serial arduino;
+boolean connectionEst = false;
 
 //////////////////////////////////
 //// CONTROL OUTPUT VARIABLES ////
@@ -220,7 +221,10 @@ void draw() {
   displayPidData();
   
   //Send data back at the same speed
-  //sendData();
+  if(arduino.available() == 0) {
+    connectionEst = true;
+  }
+  sendData();
 }
 
 void drawBackground() {

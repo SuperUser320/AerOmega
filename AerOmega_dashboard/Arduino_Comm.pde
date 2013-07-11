@@ -182,14 +182,15 @@ void storeVal() {
 
 void sendData()
 {
-  //// If e-stop is enabled continuously resend '0' line ////
-  if(eStopButton.buttonPressed()) {
-    arduino.write("0\n");
+    if(connectionEst) {
+      //// If e-stop is enabled continuously resend '0' line ////
+      if(eStopButton.buttonLocked()) {
+        arduino.write(byte(0));
+        arduino.write(byte(255));
+        println("SENT E-STOP");
+      }
+      
+      //// Continue to operate normally ////
+      arduino.write("1");
   }
-  
-  //// Continue to operate normally ////
-  arduino.write("1");
-  
-  
-  
 }
