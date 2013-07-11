@@ -182,9 +182,14 @@ void storeVal() {
 
 void sendData()
 {
+  //// If e-stop is enabled continuously resend '0' line ////
   if(eStopButton.buttonPressed()) {
     arduino.write("0\n");
   }
   
-  arduino.write("");
+  //// Continue to operate normally ////
+  arduino.write("1");
+  
+  
+  
 }

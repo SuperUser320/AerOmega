@@ -28,8 +28,26 @@
 //// Parse User Input ////
 //////////////////////////
 int dataIndex;
+boolean readUsrBool;
+byte readUsrByte;
+int readUsrInt;
+float readUsrFloat;
+double readUsrDouble;
 String readUsrChar;
-String tmpUsrStr;
+byte valueId;
+// each location represents an id and datatype associated //
+byte dataType [] = {0,0,4,4,4,4,4,4,4,4,4};
+// 0  initialize motors
+// 1  enable/disable
+// 2  kP
+// 3  kI
+// 4  kD
+// 5  kPagg
+// 6  kIagg
+// 7  kDagg
+// 8  kPheight
+// 9  kIheight
+// 10 kDheight
 
 ////////////////////////
 //// Dashboard Data ////
@@ -93,6 +111,11 @@ const int pidSampleTime = 50;
 PID xPid(&xAng, &tPitch, &pitch, kP, kI, kD, AUTOMATIC);
 PID yPid(&yAng, &tRoll, &roll, kP, kI, kD, AUTOMATIC);
       // input, output, setPt, kP, kI, kD, direction (AUTOMATIC = reverse)
+
+//////////////////////////      
+//// QUADROTOR STATES ////
+//////////////////////////
+byte quadState;
  
 /////////////////////////////////      
 //// Motor Controller Values ////
