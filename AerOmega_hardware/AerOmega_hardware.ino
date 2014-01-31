@@ -24,30 +24,6 @@
  ***********************************************************/
  
 // MAKE REQUEST DRIVEN NOT IMU DATA DRIVEN (main cpu request data from IMU)
-//////////////////////////
-//// Parse User Input ////
-//////////////////////////
-int dataIndex;
-boolean readUsrBool;
-byte readUsrByte;
-int readUsrInt;
-float readUsrFloat;
-double readUsrDouble;
-String readUsrChar;
-byte valueId = -1;
-// each location represents an id and datatype associated //
-byte dataType [] = {0,0,4,4,4,4,4,4};
-// 0  initialize motors
-// 1  enable/disable
-// 2  kP
-// 3  kI
-// 4  kD
-// 5  kPagg
-// 6  kIagg
-// 7  kDagg
-// 8  kPheight
-// 9  kIheight
-// 10 kDheight
 
 ////////////////////////
 //// Dashboard Data ////
@@ -142,7 +118,7 @@ void setup() {
   // Open serial lines on 57600 baud //
   Serial.begin(57600);
   Serial1.begin(57600);
-  Serial.write("WARNING: MOTORS MAY BE ALREADY INITIALIZED, UNPLUG BATTERY NECESSARY");
+  Serial.write("WARNING: MOTORS MAY BE ALREADY INITIALIZED, UNPLUG BATTERY IF NECESSARY");
   delay(1000);
 }
 
