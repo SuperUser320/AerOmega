@@ -6,10 +6,14 @@ class VScrollbar {
   int sposMin, sposMax;   // max and min values of slider
   int loose;              // how loose/heavy
   boolean over;           // is the mouse over the slider?
+  boolean pressOriginInside;
+  boolean pressed;
+  boolean lastPressed;
   boolean locked;
   float ratio;
-
-  VScrollbar (int xp, int yp, int sw, int sh, int l) {
+  TextBox textBox;
+  
+  VScrollbar (int xp, int yp, int sw, int sh, int l, String label) {
     swidth = sw;
     sheight = sh;
     int heighttowidth = sh - sw;
@@ -21,16 +25,32 @@ class VScrollbar {
     sposMin = ypos;
     sposMax = ypos + sheight - swidth;
     loose = l;
+    
+    textBox = new TextBox(xpos - (int(textWidth("100.0")) + 20)/2 + swidth/2, ypos + sheight + 15, int(textWidth("100.0")) + 20, 20, false, label);
   }
 
   void update() {
     if (over()) {
       over = true;
-    } 
-    else {
+    } else {
       over = false;
     }
-    if (mousePressed && over) {
+    
+    if (mouseX > xpos && mouseX < (xpos + swidth) && mouseY > ypos && mouseY < (ypos + sheight) && mousePressed) {
+      pressed = true;
+    } 
+    else {
+      pressed = false;
+    }
+    
+    //mouseDown in button
+    if (mouseX > xpos && mouseX < (xpos + swidth) && mouseY > ypos && mouseY < (ypos + sheight) && lastPressed == false && pressed == true && mousePressed) {
+      pressOriginInside = true;
+    } else if (!(mouseX > xpos && mouseX < (xpos + swidth) && mouseY > ypos && mouseY < (ypos + sheight))) {
+      pressOriginInside = false;
+    }
+    
+    if (mousePressed && over && pressOriginInside) {
       locked = true;
     }
     if (!mousePressed) {
@@ -42,6 +62,8 @@ class VScrollbar {
     if (abs(newspos - spos) > 1) {
       spos = spos + (newspos-spos)/loose;
     }
+    
+    lastPressed = mousePressed;
   }
 
   int constrain(int val, int minv, int maxv) {
@@ -59,15 +81,25 @@ class VScrollbar {
   }
 
   void display() {
+    this.update();
+    ///////////////////////////
+    // Draw background boxes //
+    ///////////////////////////
     stroke(170);
+    
+    //"Filled" background box
     fill(255);
     rect(xpos, ypos, swidth, sheight + 4);
+    //"Empty" background box
     fill(0);
     rect(xpos, ypos, swidth, spos - ypos);
+    
+    /////////////////
+    // Draw handle //
+    /////////////////
     if (over || locked) {
       fill(160);
-    } 
-    else {
+    } else {
       fill(180);
     }
     noStroke();
@@ -85,6 +117,9 @@ class VScrollbar {
     fill(140);
     rect(xpos, spos + swidth, swidth, 2);
     stroke(1);
+    
+    fill(255);
+    textBox.update(Float.toString(truncate(100 - (((spos - ypos)/(sposMax-sposMin)) * 100), 1)));
   }
 
   float getPos() {

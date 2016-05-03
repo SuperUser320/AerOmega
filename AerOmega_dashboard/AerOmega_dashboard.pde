@@ -146,7 +146,8 @@ float upTime;
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 void setup() {
-  size(1280, 800);
+  size(1280, 800, "processing.core.PGraphicsRetina2D");
+  hint(ENABLE_RETINA_PIXELS);
   smooth();
   
   ////////////////////
@@ -203,7 +204,7 @@ void setup() {
   //////////////////////////////////////
   //// ARDUINO SERIAL COMMUNICATION ////
   //////////////////////////////////////
-  arduino = new Serial(this, Serial.list()[1], 57600);  //For reduced packed drop reduce baud
+  arduino = new Serial(this, Serial.list()[5], 57600);  //For reduced packed drop reduce baud
   delay(10);
 }
 
